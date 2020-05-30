@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 //import Schema and Resolver
+const graphQLSchema = require("./server/graphql/schema/index");
+const graphQLResolvers = require("./server/graphql/resolvers/index");
 
 const app = express();
 
@@ -15,6 +17,12 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //graphQL entry
+app.use("/graphql", graphqlHttp({
+  schema: graphQLSchema,
+  rootValue: graphQLResolvers,
+  graphiql: true
+}));
+
 
 //set static folder
 app.use(express.static("public"));
