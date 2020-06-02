@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {ThemeProvider} from 'styled-components';
 
+//
+import './agent';
+
 //styles
 import GlobalStyle from './theme/globalStyles';
 import Theme from './theme/theme';

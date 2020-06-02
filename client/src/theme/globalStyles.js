@@ -9,6 +9,14 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
+
+  /*Button colors override  */
+  .btn-primary {
+    background-color: #4CAD98;
+  }
+  .btn-secondary {
+    background-color: #61FAD9;
+  }
 `;
 
 export default GlobalStyle;

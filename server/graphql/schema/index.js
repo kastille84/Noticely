@@ -5,13 +5,26 @@ module.exports = buildSchema(`
     _id: ID!
     text: String!
   }
+
+  type User {
+    _id: ID!
+    name: String!
+    email: String!
+    password: String!
+    token: String!
+  }
+  input UserInput {
+    name: String!
+    email: String!
+    password: String!
+  }
   
   type RootQuery {
     dummies: [Dummy!]!
   }
 
   type RootMutation {
-    createDummy(text:String!):Dummy!
+    registerUser(userInput:UserInput!):User! 
   }
 
   schema {
