@@ -1,13 +1,17 @@
 import React, { useState, FormEvent } from "react";
-import axios from 'axios';
+import {connect} from 'react-redux';
 import { Modal, ModalBody, Input, Label, Button } from "reactstrap";
+
 import { FormWrapper, InputGroup } from "./styled";
 import { validateEmail, validateConfirmPassword } from "../../utils/validate";
+
+import {registerUser} from '../../redux/actions';
 
 export interface RegisterProps {
   modal: boolean;
   toggleModal: any;
   changeModalType: any;
+  registerUser: Function
 }
 export interface IRegisterErrors {
   [key: string]: any;
@@ -17,6 +21,7 @@ const Register: React.SFC<RegisterProps> = ({
   modal,
   toggleModal,
   changeModalType,
+  registerUser
 }) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -51,25 +56,7 @@ const Register: React.SFC<RegisterProps> = ({
     // set loading state true
     // make graphQL call
     console.log("made it here")
-    axios.post("/graphql", 
-      JSON.stringify({
-        query: `
-          mutation {
-            registerUser(userInput: {name: "${fullName}", email: "${email}", password: "${password}"}) {
-              _id
-              name,
-              email,
-              token
-            }
-          }
-        `
-      }))
-      .then(data => {
-        console.log("data", data)
-      })
-      .catch(err => {
-        console.log("err", err)
-      });
+    registerUser(fullName, email, password);
   };
 
   return (
@@ -151,4 +138,8 @@ const Register: React.SFC<RegisterProps> = ({
   );
 };
 
-export default Register;
+
+export default connect(
+  null, 
+  {registerUser}
+)(Register);
