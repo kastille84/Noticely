@@ -6,7 +6,6 @@ const User = require("../../models/User");
 
 module.exports = {
   registerUser: async(args) => {
-    console.log("args", args);
     try {
       // look for user with the same email address
       const existingUser = await User.findOne({email: args.userInput.email});
@@ -39,6 +38,20 @@ module.exports = {
       };
     } catch(err) {
       throw err;
+    }
+  },
+  getUserInfo: async(args, req) => {
+    //veriy jwt
+    const jwtObj= jwt.decode(req.headers.authorization.slice(7));
+    try {
+      const user = await User.findOne({email: jwtObj.email});
+      return {
+        ...user._doc,
+        password: null,
+        token: req.headers.authorization.slice(7)
+      }
+    } catch(error) {
+      throw error; 
     }
   }
 }

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {connect} from "react-redux";
 import {
   Collapse,
   Navbar,
@@ -19,9 +20,12 @@ import SignIn from '../SignIn';
 import Register from '../Register';
 
 import StyledNavigation from './styled';
+// types
+import {IUser} from '../../redux/reducers/user';
+import {StoreState} from '../../redux/root-reducer';
 
 export interface NavigationProps {
-  
+  user: IUser
 }
  
 const Navigation: React.SFC<NavigationProps> = (props) => {
@@ -45,7 +49,11 @@ const Navigation: React.SFC<NavigationProps> = (props) => {
             </NavItem>
           </Nav>
           <NavbarText>
-            <Button color="primary" onClick={toggleModal}>Sign In</Button>
+            {Object.keys(props.user.currentUser).length===0? 
+              <Button color="primary" onClick={toggleModal}>Sign In</Button>
+              :
+              <Button color="primary" >Logout</Button>
+            }
             {modalType==='signin'? 
               <SignIn modal={modal} toggleModal={toggleModal} changeModalType={setModalType} /> 
               :
@@ -57,5 +65,9 @@ const Navigation: React.SFC<NavigationProps> = (props) => {
     </StyledNavigation>
    );
 }
- 
-export default Navigation;
+
+const mapStateToProps = (state:StoreState) => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps)(Navigation);

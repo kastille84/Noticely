@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
 import {connect} from 'react-redux';
 import { Modal, ModalBody, Input, Label, Button } from "reactstrap";
 
@@ -6,12 +6,14 @@ import { FormWrapper, InputGroup } from "./styled";
 import { validateEmail, validateConfirmPassword } from "../../utils/validate";
 
 import {registerUser} from '../../redux/actions';
+import {StoreState} from '../../redux/root-reducer';
 
 export interface RegisterProps {
   modal: boolean;
   toggleModal: any;
   changeModalType: any;
-  registerUser: Function
+  registerUser: Function;
+  user: any;
 }
 export interface IRegisterErrors {
   [key: string]: any;
@@ -21,7 +23,8 @@ const Register: React.SFC<RegisterProps> = ({
   modal,
   toggleModal,
   changeModalType,
-  registerUser
+  registerUser,
+  user
 }) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -55,15 +58,33 @@ const Register: React.SFC<RegisterProps> = ({
     // at this point it passed validation, 
     // set loading state true
     // make graphQL call
-    console.log("made it here")
     registerUser(fullName, email, password);
+    // check connected state of user, if no error then close off the modal
+    
   };
+
+  useEffect(()=> {
+    //#Todo - If user.registering is true -> show a loader
+    if(user.registering ===false && Object.keys(user.currentUser).length>0) {
+      //close modal
+      toggleModal();
+    }
+  }, [user])
+
+  const renderErrors = () => {
+    if(user.errors) {
+      return user.errors.map((error:any) => {
+        return <p className="text-danger">{error.message}</p>
+      })
+    }
+  }
 
   return (
     <Modal isOpen={modal} toggle={toggleModal} className="sign-in-modal">
       <ModalBody>
         <h3 className="text-center">Register</h3>
         <FormWrapper>
+          {renderErrors()}
           <form onSubmit={handleSubmit}>
             <InputGroup>
               <Label for="full_name">Name</Label>
@@ -138,8 +159,11 @@ const Register: React.SFC<RegisterProps> = ({
   );
 };
 
+const mapStateToProps = (state: StoreState) => ({
+  user: state.user
+})
 
 export default connect(
-  null, 
+  mapStateToProps, 
   {registerUser}
 )(Register);

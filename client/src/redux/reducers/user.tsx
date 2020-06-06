@@ -3,11 +3,15 @@ import constants from '../constants';
 
 export interface IUser {
   registering: boolean,
-  currentUser: any
+  loggingIn: boolean,
+  currentUser: any,
+  errors: any
 }
 const initialState = {
   registering: false,
-  currentUser: {}
+  loggingIn: false,
+  currentUser: {},
+  errors: null
 }
 
 export default (state:IUser=initialState, action:Action) => {
@@ -22,6 +26,29 @@ export default (state:IUser=initialState, action:Action) => {
         ...state,
         registering: false,
         currentUser: action.payload
+      }
+    case constants.USER.REGISTER_USER_FAIL:
+      return {
+        ...state,
+        registering: false,
+        errors: action.payload
+      }
+    case constants.USER.LOGIN_USER:
+      return {
+        ...state,
+        loggingIn: true,
+      }
+    case constants.USER.LOGIN_USER_SUCCESS:
+      return {
+        ...state,
+        loggingIn: false,
+        currentUser: action.payload
+      }
+    case constants.USER.LOGIN_USER_FAIL:
+      return {
+        ...state,
+        loggingIn: false,
+        errors: action.payload
       }
     default: 
       return state;

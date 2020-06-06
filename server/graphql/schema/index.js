@@ -21,6 +21,7 @@ module.exports = buildSchema(`
   
   type RootQuery {
     dummies: [Dummy!]!
+    getUserInfo: User!
   }
 
   type RootMutation {
