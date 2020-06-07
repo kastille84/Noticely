@@ -54,8 +54,9 @@ const SignIn: React.SFC<SignInProps> = ({
 
   useEffect(()=> {
     //#Todo - If user.registering is true -> show a loader
-    if(user.loggingIn ===false && Object.keys(user.currentUser).length>0) {
+    if(user.loggingIn ===false && Object.keys(user.currentUser).length>0 && modal===true) {
       //close modal
+      console.log('called')
       toggleModal();
     }
   }, [user])

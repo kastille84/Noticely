@@ -50,6 +50,10 @@ export default (state:IUser=initialState, action:Action) => {
         loggingIn: false,
         errors: action.payload
       }
+    case constants.USER.LOGOUT_USER: 
+      return {
+        ...initialState
+      }
     default: 
       return state;
   }

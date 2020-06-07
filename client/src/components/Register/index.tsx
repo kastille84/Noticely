@@ -64,7 +64,7 @@ const Register: React.SFC<RegisterProps> = ({
 
   useEffect(()=> {
     //#Todo - If user.registering is true -> show a loader
-    if(user.registering ===false && Object.keys(user.currentUser).length>0) {
+    if(user.registering ===false && Object.keys(user.currentUser).length>0 && modal===true) {
       //close modal
       toggleModal();
     }

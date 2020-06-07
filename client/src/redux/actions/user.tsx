@@ -132,3 +132,10 @@ export const loginUser = (email: string, password: string) => {
     }
   }
 }
+
+export const logoutUser = () => {
+  agent.clearSession();
+  return {
+    type: constants.USER.LOGOUT_USER
+  }
+}

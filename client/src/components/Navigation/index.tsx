@@ -24,8 +24,11 @@ import StyledNavigation from './styled';
 import {IUser} from '../../redux/reducers/user';
 import {StoreState} from '../../redux/root-reducer';
 
+import {logoutUser} from "../../redux/actions";
+
 export interface NavigationProps {
-  user: IUser
+  user: IUser,
+  logoutUser: Function
 }
  
 const Navigation: React.SFC<NavigationProps> = (props) => {
@@ -36,6 +39,10 @@ const Navigation: React.SFC<NavigationProps> = (props) => {
   const toggleCollapse = () => setIsOpen(!isOpen);
   const toggleModal = () => setModal(!modal);
 
+  const isLoggedIn = ():boolean => {
+    return Object.keys(props.user.currentUser).length>0;
+  }
+
   return ( 
     <StyledNavigation>
       <Navbar light expand="md">
@@ -44,15 +51,17 @@ const Navigation: React.SFC<NavigationProps> = (props) => {
         <NavbarToggler onClick={toggleCollapse} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <NavItem>
-              <NavLink href="/components/">Manage</NavLink>
-            </NavItem>
+            {isLoggedIn() &&
+              <NavItem>
+                <NavLink href="/manage">Manage</NavLink>
+              </NavItem>            
+            }
           </Nav>
           <NavbarText>
-            {Object.keys(props.user.currentUser).length===0? 
-              <Button color="primary" onClick={toggleModal}>Sign In</Button>
+            {isLoggedIn()? 
+              <Button color="primary" onClick={()=>props.logoutUser()}>Logout</Button>
               :
-              <Button color="primary" >Logout</Button>
+              <Button color="primary" onClick={()=>toggleModal()}>Sign In</Button>
             }
             {modalType==='signin'? 
               <SignIn modal={modal} toggleModal={toggleModal} changeModalType={setModalType} /> 
@@ -70,4 +79,6 @@ const mapStateToProps = (state:StoreState) => ({
   user: state.user
 });
 
-export default connect(mapStateToProps)(Navigation);
+export default connect(mapStateToProps ,{
+  logoutUser
+})(Navigation);
