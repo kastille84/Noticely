@@ -59,7 +59,6 @@ const Register: React.SFC<RegisterProps> = ({
     // set loading state true
     // make graphQL call
     registerUser(fullName, email, password);
-    // check connected state of user, if no error then close off the modal
     
   };
 

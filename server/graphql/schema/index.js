@@ -18,10 +18,16 @@ module.exports = buildSchema(`
     email: String!
     password: String!
   }
+
+  input LoginInput {
+    email: String!
+    password: String!
+  }
   
   type RootQuery {
     dummies: [Dummy!]!
     getUserInfo: User!
+    loginUser(loginInput:LoginInput!):User!
   }
 
   type RootMutation {

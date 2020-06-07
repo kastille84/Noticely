@@ -97,3 +97,38 @@ export const getUserInfo = () => {
     }
   }
 }
+
+export const loginUser = (email: string, password: string) => {
+  return async (dispatch:Dispatch) => {
+    dispatch<ILoginUserAction>({type: constants.USER.LOGIN_USER});
+    try {
+      const response = await axios.post("/graphql", 
+      JSON.stringify({
+        query: `
+          query {
+            loginUser(loginInput: {email: "${email}", password: "${password}"}) {
+              _id
+              name,
+              email,
+              token
+            }
+          }
+        `
+      }));
+      const {data:{data:{loginUser}}} = response;
+      dispatch<ILoginUserActionSuccess>({
+        type: constants.USER.LOGIN_USER_SUCCESS,
+        payload: loginUser
+      });
+      //set session
+      agent.setSession(loginUser.token);
+
+    } catch(error) {
+      console.log("error",error.response)
+      dispatch<ILoginUserActionFail>({
+        type: constants.USER.LOGIN_USER_FAIL,
+        payload: error.response.data.errors
+      })
+    }
+  }
+}

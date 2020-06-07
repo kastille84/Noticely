@@ -53,5 +53,37 @@ module.exports = {
     } catch(error) {
       throw error; 
     }
+  },
+  loginUser: async(args) => {
+    console.log("args", args)
+    try {      
+      const user = await User.findOne({email: args.loginInput.email});
+      console.log("user", user)
+      if(!user) {
+        throw new Error("This email does not exist in our records.")
+      }
+      //verify
+      const verified = await bcrypt.compare(args.loginInput.password,user.password);
+      if(!verified) {
+        throw new Error("Email Password combination is incorrect.")
+      }
+      //generate a new token
+      const token = jwt.sign(
+        {
+        _id: user._id,
+        email: user.email
+        },
+        "somesupersecretKey",
+        {
+          expiresIn: '2h'
+        });
+      return {
+        ...user._doc,
+        password: null,
+        token: token
+      }
+    } catch(error) {
+      throw error; 
+    }
   }
 }

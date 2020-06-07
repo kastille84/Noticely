@@ -5,13 +5,14 @@ import { Modal, ModalBody, Input, Label, Button } from "reactstrap";
 import { FormWrapper, InputGroup } from "../Register/styled";
 import { validateEmail } from "../../utils/validate";
 
-//import {loginUser} from '../../redux/actions';
+import {loginUser} from '../../redux/actions';
 import {StoreState} from '../../redux/root-reducer';
 
 export interface SignInProps {
   modal: boolean,
   toggleModal: any,
   changeModalType: any,
+  loginUser: Function,
   user: any
 }
 export interface ILoginErrors {
@@ -22,6 +23,7 @@ const SignIn: React.SFC<SignInProps> = ({
   modal,
   toggleModal,
   changeModalType,
+  loginUser,
   user
 }) => {
   const [email, setEmail] = useState("");
@@ -47,10 +49,16 @@ const SignIn: React.SFC<SignInProps> = ({
     // at this point it passed validation, 
     // set loading state true
     // make graphQL call
-    //LoginUser( email, password);
-    // check connected state of user, if no error then close off the modal
-    
+    loginUser( email, password);
   };
+
+  useEffect(()=> {
+    //#Todo - If user.registering is true -> show a loader
+    if(user.loggingIn ===false && Object.keys(user.currentUser).length>0) {
+      //close modal
+      toggleModal();
+    }
+  }, [user])
 
   const renderErrors = () => {
     if(user.errors) {
@@ -118,4 +126,6 @@ const mapStateToProps = (state: StoreState) => ({
   user: state.user
 });
 
-export default connect(mapStateToProps)(SignIn);
+export default connect(mapStateToProps,{
+  loginUser
+})(SignIn);
