@@ -4,11 +4,27 @@ import {IAddDummyAction} from './dummy';
 import {
   IRegisterUserAction,
   IRegisterUserActionSuccess,
-  IRegisterUserActionFail
+  IRegisterUserActionFail,
+  ILoginUserAction,
+  ILoginUserActionSuccess,
+  ILoginUserActionFail,
 } from './user';
+
+import {
+  ISetIpLocationAction,
+  ISetValidPlaceAction,
+  ISetSelectedPlace
+} from './location';
 
 export type Action = 
 IAddDummyAction |
 IRegisterUserAction |
 IRegisterUserActionSuccess |
-IRegisterUserActionFail; 
+IRegisterUserActionFail |
+ILoginUserAction |
+ILoginUserActionSuccess |
+ILoginUserActionFail |
+ISetIpLocationAction |
+ISetValidPlaceAction |
+ISetSelectedPlace
+; 

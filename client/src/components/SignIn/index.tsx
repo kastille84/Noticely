@@ -72,7 +72,11 @@ const SignIn: React.SFC<SignInProps> = ({
   return (
     <Modal isOpen={modal} toggle={toggleModal} className="sign-in-modal">
       <ModalBody>
-        <h3 className="text-center">Login</h3>
+        {user.loggingIn?
+          <p>Loading ...</p>
+          :
+          <h3 className="text-center">Login</h3>
+        }
         <FormWrapper>
           {renderErrors()}
           <form onSubmit={handleSubmit}>
