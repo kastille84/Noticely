@@ -74,7 +74,7 @@ const Home: React.SFC<HomeProps> = (props) => {
             color="secondary"
             outline={false}
             block
-            onClick={()=>props.history.push("/make-a-flyer")}
+            onClick={()=>props.history.push("/make-flyer")}
           >Place flyer here</Button>
 
         </SlidingPane>

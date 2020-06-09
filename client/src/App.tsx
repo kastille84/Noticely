@@ -10,8 +10,10 @@ import agent from './agent';
 import {getUserInfo} from './redux/actions';
 
 import Navigation from './components/Navigation';
+
 //Containers
 import Home from './containers/Home/index';
+import MakeFlyer from './containers/MakeFlyer/index';
 
 import {StoreState} from './redux/root-reducer';
 
@@ -36,6 +38,7 @@ const App:React.SFC<AppProps> = ({getUserInfo}) => {
       <Router>
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/make-flyer" component={MakeFlyer} />
         </Switch>
       </Router>
       {/* Footer goes here */}
