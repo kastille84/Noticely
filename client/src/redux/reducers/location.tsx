@@ -3,8 +3,8 @@ import constants from '../constants';
 
 export interface ILocation {
     ipLocation: {lat:number, lng:number}|null,
-    validPlace: any,
-    selectedPlace: any,
+    validPlace: any|null,
+    selectedPlace: any|null,
 }
 const initialState = {
     ipLocation: {

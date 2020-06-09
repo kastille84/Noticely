@@ -7,10 +7,11 @@ import {
   withGoogleMap,
   GoogleMap,
   Marker,
+  InfoWindow
 } from "react-google-maps";
 import  SearchBox from "react-google-maps/lib/components/places/SearchBox";
 import { connect } from 'react-redux';
-import {setSelectedPlace, setValidPlace} from '../../redux/actions';
+import {setSelectedPlace, setValidPlace, setOpenFlyerPane} from '../../redux/actions';
 import './Map.css';
 
 const MapWithASearchBox = compose(
@@ -58,6 +59,8 @@ const MapWithASearchBox = compose(
           }
 
           this.props.setSelectedPlace(selectedPlace);
+          // action to open place slider
+          this.props.setOpenFlyerPane(true);
 
           const bounds = new google.maps.LatLngBounds();
 
@@ -95,17 +98,26 @@ const MapWithASearchBox = compose(
     <SearchBox
       ref={props.onSearchBoxMounted}
       bounds={props.bounds}
-      controlPosition={google.maps.ControlPosition.TOP_LEFT}
+      //controlPosition={google.maps.ControlPosition.TOP_RIGHT}
+      controlPosition={2}
       onPlacesChanged={props.onPlacesChanged}
     >
       <input
         type="text"
-        placeholder="Search Flyer By Location"
+        placeholder="Search location for flyers"
         className={"Map_Input"}
       />
     </SearchBox>
     {props.markers.map((marker, index) =>
-      <Marker key={index} position={marker.position} />
+      <Marker 
+        key={index} 
+        position={marker.position} 
+        title={props.location.selectedPlace.name}
+        onClick={()=> {
+            props.setOpenFlyerPane(true)
+        }}
+        >
+        </Marker>
     )}
   </GoogleMap>
 );
@@ -146,5 +158,6 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
     setValidPlace,
-    setSelectedPlace
+    setSelectedPlace,
+    setOpenFlyerPane
 })(MapWithASearchBox);

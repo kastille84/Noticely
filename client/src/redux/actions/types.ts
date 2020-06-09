@@ -16,6 +16,10 @@ import {
   ISetSelectedPlace
 } from './location';
 
+import {
+  ISetFlyersAction,
+} from './flyer';
+
 export type Action = 
 IAddDummyAction |
 IRegisterUserAction |
@@ -26,5 +30,6 @@ ILoginUserActionSuccess |
 ILoginUserActionFail |
 ISetIpLocationAction |
 ISetValidPlaceAction |
-ISetSelectedPlace
+ISetSelectedPlace |
+ISetFlyersAction
 ; 
