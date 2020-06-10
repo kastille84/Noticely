@@ -13,9 +13,15 @@ const GlobalStyle = createGlobalStyle`
   /*Button colors override  */
   .btn-primary {
     background-color: #4CAD98;
+    border-color: #4CAD98;
   }
+  .btn-primary:hover {
+    backgrond-color: #61FAD9;
+  }
+
   .btn-secondary {
     background-color: #61FAD9;
+    border-color: #61FAD9;
   }
 `;
 

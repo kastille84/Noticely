@@ -50,7 +50,6 @@ const Register: React.SFC<RegisterProps> = ({
     setErrors(errorsObj);
     //check if any errors exist, don't submit form if errors
     for (let errorItem in errorsObj) {
-      console.log("errorItem", errorItem)
       if (errorsObj[errorItem] !== "") {
         return;
       }

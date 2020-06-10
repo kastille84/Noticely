@@ -12,3 +12,24 @@ export const validateConfirmPassword = (password: string, confirmPassword: strin
   }
   return "";
 }
+
+export const validateImage = (str:string): boolean => {
+  const indexOfPeriod = str.indexOf('.');
+  const fileType = str.slice(indexOfPeriod+ 1, str.length);
+  switch (fileType) {
+      case 'png':
+      case 'PNG':
+          return true;
+      case 'jpg':
+      case 'JPG':
+          return true;
+      case 'jpeg': 
+      case 'JPEG':
+          return true;
+      case 'gif':
+      case 'GIF':
+          return true;
+      default:
+          return false;      
+  }
+}

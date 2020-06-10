@@ -1,7 +1,9 @@
 const userResolver = require("./user");
+const flyerResolver = require("./flyer");
 
 const rootResolver = {
-  ...userResolver
+  ...userResolver,
+  ...flyerResolver
 }
 
 module.exports = rootResolver;
