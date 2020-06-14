@@ -1,27 +1,31 @@
-import React, {useState, FormEvent} from 'react';
+import React, {useState, useEffect, FormEvent} from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
-import {Label, Input, Button} from 'reactstrap';
+import {Label, Input, Button, Spinner} from 'reactstrap';
 
-import { FormWrapper, InputGroup } from "../../components/Register/styled";
+import { FormWrapper, InputGroup, CheckBoxContainer } from "../../components/Form/styled";
 import agent from '../../agent';
 
 import { StoreState} from '../../redux/root-reducer';
 import { IFlyer } from '../../redux/reducers/flyer';
 import { ILocation } from '../../redux/reducers/location';
 import { IUser } from '../../redux/reducers/user';
-import {validateImage} from '../../utils/validate';
+import {validateImage, validateEmail} from '../../utils/validate';
+
+import {makeFlyer} from '../../redux/actions';
 
 export interface MakeFlyerProps {
     reduxLocation: ILocation,
     flyer: IFlyer,
-    user: IUser
+    user: IUser,
+    makeFlyer: any
 }
 
 const MakeFlyer:React.SFC<MakeFlyerProps> = ({
     reduxLocation,
     flyer,
-    user
+    user,
+    makeFlyer
 }) => {
     // useState
     const [heading, setHeading] = useState("");
@@ -142,7 +146,8 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
         errorsObj.description = description.trim().length > 2000? "Body must not be more than 2000 characters": "";
         errorsObj.description = description.trim().length < 3? "Body must be more than 3 characters": "";
         errorsObj.phone = (phoneSelected && phone.trim().length > 30)? "Phone must be less than 30 characters": "";
-        errorsObj.phone = (/[0-9]/.test(phone))? "": "Phone must be all numbers";
+        errorsObj.phone = phoneSelected && !(/[0-9]/.test(phone)) && "Phone must be all numbers";
+        errorsObj.email = selectedEmail && validateEmail(email)==="Not a Valid Email" && "Email is invalid";
 
         setErrors(errorsObj);
         console.log(errorsObj)
@@ -153,26 +158,49 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
             }
         }
 
-        //construct flyer body to be sent
+        // construct flyer body to be sent
         const flyerBody = {
-            userId: user.currentUser._id,
+            placeId: reduxLocation.selectedPlace.placeId,
+            formattedAddress: reduxLocation.selectedPlace.formatted_address,
+            latlng: reduxLocation.selectedPlace.latlng,
+            name: reduxLocation.selectedPlace.name,
+            images: [img1, img2],
+            heading: heading,
+            description: description,
+            phone: phoneSelected? phone:"",
+            email: selectedEmail? email: ""
+        }
+
+        // async action to make API call to make-flyer
+        makeFlyer(flyerBody);
+    }
+
+    const renderErrors = () => {
+        if(flyer.errors) {
+          return flyer.errors.map((error:any) => {
+            return <p className="text-danger">{error.message}</p>
+          })
         }
     }
 
-    // const renderErrors = () => {
-    //     if(user.errors) {
-    //       return user.errors.map((error:any) => {
-    //         return <p className="text-danger">{error.message}</p>
-    //       })
-    //     }
-    // }
+    useEffect(()=> {
+        if(flyer.makingFlyer) {
+
+        }
+
+        if(flyer.selectedFlyer && Object.keys(flyer.selectedFlyer).length>0) {
+            //redirect to View Flyer
+            console.log('redirect to View Flyer')
+        }
+
+    }, [flyer])
 
     return (
         <div>
             <h2>Make Your Flyer</h2>
             <p>at {(reduxLocation.selectedPlace||{}).name}</p>
             <FormWrapper>
-                {/* {renderErrors()} */}
+                {renderErrors()}
                 <form onSubmit={handleSubmit}>
                     <InputGroup>
                         {errors.heading && <p className="text-danger">{errors.heading}</p>}                 
@@ -212,34 +240,24 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         <React.Fragment>
                             <InputGroup>
                                 <Label for="img">Ways to Contact You</Label>
-                                <section className="d-flex">
-                                    <div>
-                                        <Input 
-                                            type="checkbox" 
-                                            value="email" 
-                                            onChange={(e)=>setSelectedEmail(selectedEmail==""?e.target.value:"")}
-                                        />{" "}Email
-                                    </div>
-                                    <div>
-                                        <Input 
-                                            type="checkbox" 
-                                            value="addPhone" 
-                                            onChange={(e)=>setPhoneSelected(phoneSelected==""?e.target.value:"")}
-                                        />{" "} Phone
-                                    </div>
-                                </section>
+                                    <CheckBoxContainer>
+                                        <div className="CheckBoxItem">
+                                            <Input 
+                                                type="checkbox" 
+                                                value="email" 
+                                                onChange={(e)=>setSelectedEmail(selectedEmail==""?e.target.value:"")}
+                                            />{" "}Email {"|"}
+                                        </div>
+                                        <div className="CheckBoxItem">
+                                            <Input 
+                                                type="checkbox" 
+                                                value="addPhone" 
+                                                onChange={(e)=>setPhoneSelected(phoneSelected==""?e.target.value:"")}
+                                            />{" "} Phone
+                                        </div>
+                                    </CheckBoxContainer>
+                                
                             </InputGroup>
-                            {phoneSelected && 
-                                <InputGroup>
-                                    <Label for="phone">Phone</Label>
-                                    {errors.phone && <p className="text-danger">{errors.phone}</p>}
-                                    <Input 
-                                        type="tel" 
-                                        name="phone"
-                                        onChange={(e)=>setPhone(e.target.value)}
-                                    />                            
-                                </InputGroup>                            
-                            }
                             {selectedEmail &&
                                 <InputGroup>
                                     <Label for="email">Email</Label>
@@ -251,6 +269,17 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                     />                            
                                 </InputGroup>
                             }
+                            {phoneSelected && 
+                                <InputGroup>
+                                    <Label for="phone">Phone</Label>
+                                    {errors.phone && <p className="text-danger">{errors.phone}</p>}
+                                    <Input 
+                                        type="tel" 
+                                        name="phone"
+                                        onChange={(e)=>setPhone(e.target.value)}
+                                    />                            
+                                </InputGroup>                            
+                            }
                         </React.Fragment>                        
                     )
                     :
@@ -260,7 +289,13 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         type="submit"
                         color='primary'
                         outline={false}
-                    >Make Flyer</Button>
+                    >
+                        {flyer.makingFlyer?
+                            <Spinner color="light"></Spinner>
+                        :
+                        "Make Flyer"
+                        }
+                    </Button>
                 </form>
             </FormWrapper>
         </div>
@@ -274,5 +309,5 @@ const mapStateToProps = (state: StoreState) => ({
   });
 
 export default connect(mapStateToProps, {
-
+    makeFlyer
 })(MakeFlyer);

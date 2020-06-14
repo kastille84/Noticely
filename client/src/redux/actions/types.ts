@@ -17,7 +17,7 @@ import {
 } from './location';
 
 import {
-  ISetFlyersAction,
+  IFlyerAction,
 } from './flyer';
 
 export type Action = 
@@ -31,5 +31,5 @@ ILoginUserActionFail |
 ISetIpLocationAction |
 ISetValidPlaceAction |
 ISetSelectedPlace |
-ISetFlyersAction
+IFlyerAction
 ; 

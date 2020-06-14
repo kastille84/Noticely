@@ -4,8 +4,7 @@ import styled from 'styled-components';
 const Wrapper = styled.section`
 
     & .MapContainer {
-        margin: 20px auto;
-        width: 90%;
+        
     } 
 
     & .BtnControls {

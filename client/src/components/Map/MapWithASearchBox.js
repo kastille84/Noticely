@@ -55,7 +55,11 @@ const MapWithASearchBox = compose(
           const selectedPlace = {
               placeId: places[0].place_id,
               formatted_address: places[0].formatted_address,
-              name: places[0].name
+              name: places[0].name,
+              latlng: {
+                lat: places[0].geometry.location.lat(),
+                lng: places[0].geometry.location.lng()
+              }
           }
 
           this.props.setSelectedPlace(selectedPlace);

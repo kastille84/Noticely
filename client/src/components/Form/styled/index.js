@@ -26,3 +26,18 @@ export const InputGroup = styled.div`
     }
   }
 `;
+
+export const CheckBoxContainer = styled.div`
+  display: flex;
+
+  .CheckBoxItem {
+    display: inline-block;
+
+    .form-check-input {
+      width: 25px;
+      position: unset;
+      margin-top: unset;
+      margin-left: unset;
+    }
+  }
+`;

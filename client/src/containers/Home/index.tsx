@@ -71,9 +71,8 @@ const Home: React.SFC<HomeProps> = (props) => {
           onRequestClose={() => props.setOpenFlyerPane(false)}
         >
           <Button
-            color="secondary"
+            color="primary"
             outline={false}
-            block
             onClick={()=>props.history.push("/make-flyer")}
           >Place flyer here</Button>
 

@@ -6,8 +6,11 @@ const schema = new Schema({
     type: String,
     required: true
   },
-  formatted_address: {
+  formattedAddress: {
     type: String
+  },
+  latlng: {
+    type: Object
   },
   name: {
     type: String

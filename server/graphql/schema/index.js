@@ -17,6 +17,41 @@ module.exports = buildSchema(`
     signedRequest: String!
     url: String!
   }
+  type ContactType {
+    phone: String!
+    email: String!
+  }
+  type Flyer {
+    _id: ID!
+    placeId: String! 
+    name: String!
+    heading: String! 
+    description: String!
+    images: [String]!
+    contact: ContactType
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  input LatLng {
+    lat: String!
+    lng: String!
+  }
+  input Contact {
+    phone: String
+    email: String
+  }
+
+  input FlyerInput {
+    placeId: String! 
+    formattedAddress: String! 
+    latlng: LatLng!
+    name: String!
+    heading: String! 
+    description: String!
+    images: [String]!
+    contact: Contact!
+  }
 
   input UserInput {
     name: String!
@@ -43,6 +78,7 @@ module.exports = buildSchema(`
 
   type RootMutation {
     registerUser(userInput:UserInput!):User! 
+    makeFlyer(flyerInput:FlyerInput!): Flyer!
   }
 
   schema {

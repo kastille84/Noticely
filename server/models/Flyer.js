@@ -4,10 +4,9 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
-  place_id: {
+  placeId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Place',
     required: true
@@ -16,7 +15,7 @@ const schema = new Schema({
     type: String,
     required: true
   },
-  body: {
+  description: {
     type: String,
     required: true
   },

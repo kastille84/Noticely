@@ -2,7 +2,7 @@ import React, { useState, useEffect, FormEvent } from "react";
 import {connect} from 'react-redux';
 import { Modal, ModalBody, Input, Label, Button } from "reactstrap";
 
-import { FormWrapper, InputGroup } from "./styled";
+import { FormWrapper, InputGroup } from "../Form/styled";
 import { validateEmail, validateConfirmPassword } from "../../utils/validate";
 
 import {registerUser} from '../../redux/actions';
