@@ -13,8 +13,9 @@ import { IUser } from '../../redux/reducers/user';
 import {validateImage, validateEmail} from '../../utils/validate';
 
 import {makeFlyer} from '../../redux/actions';
+import { RouteComponentProps } from 'react-router';
 
-export interface MakeFlyerProps {
+export interface MakeFlyerProps extends RouteComponentProps {
     reduxLocation: ILocation,
     flyer: IFlyer,
     user: IUser,
@@ -25,7 +26,8 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
     reduxLocation,
     flyer,
     user,
-    makeFlyer
+    makeFlyer,
+    history
 }) => {
     // useState
     const [heading, setHeading] = useState("");
@@ -184,13 +186,14 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
     }
 
     useEffect(()=> {
-        if(flyer.makingFlyer) {
-
+        if(!reduxLocation.selectedPlace) {
+            history.push("/")
         }
-
+    },[])
+    useEffect(()=> {
+        //redirect to View Flyer once flyer is made
         if(flyer.selectedFlyer && Object.keys(flyer.selectedFlyer).length>0) {
-            //redirect to View Flyer
-            console.log('redirect to View Flyer')
+            history.push("/view-flyer");
         }
 
     }, [flyer])

@@ -37,7 +37,7 @@ export const makeFlyer = (flyer: IFlyerData) => {
                                 placeId: "${flyer.placeId}", formattedAddress: "${flyer.formattedAddress}" , 
                                 latlng: {lat:"${flyer.latlng.lat}", lng: "${flyer.latlng.lng}"},
                                 name: "${flyer.name}", heading: "${flyer.heading}", 
-                                description: "${flyer.description}", images: "${flyer.images}",
+                                description: """${flyer.description}""", images: "${flyer.images}",
                                 contact: {phone:"${flyer.phone}", email: "${flyer.email}"}
                             }) {
                                 _id

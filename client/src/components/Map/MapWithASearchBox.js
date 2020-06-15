@@ -11,7 +11,7 @@ import {
 } from "react-google-maps";
 import  SearchBox from "react-google-maps/lib/components/places/SearchBox";
 import { connect } from 'react-redux';
-import {setSelectedPlace, setValidPlace, setOpenFlyerPane} from '../../redux/actions';
+import {setSelectedPlace, setValidPlace, setOpenFlyerPane, getPlaces} from '../../redux/actions';
 import './Map.css';
 
 const MapWithASearchBox = compose(
@@ -87,6 +87,16 @@ const MapWithASearchBox = compose(
           // refs.map.fitBounds(bounds);
         },        
       })
+    },
+    componentDidMount() {
+      //go fetch all places
+      this.props.getPlaces();
+    },
+    componentDidUpdate(prevProps,prevState) {
+      if(!prevProps.location.gettingPlaces && this.props.location.gettingPlaces && this.props.location.allPlaces.length > 0) {
+        console.log("reaches here")
+        this.setState({markers: [...this.state.markers, ...this.props.location.allPlaces]})
+      }
     }
   }),
   withScriptjs,
@@ -116,12 +126,39 @@ const MapWithASearchBox = compose(
       <Marker 
         key={index} 
         position={marker.position} 
-        title={props.location.selectedPlace.name}
+        title={marker.name}
         onClick={()=> {
             props.setOpenFlyerPane(true)
         }}
         >
         </Marker>
+    )}
+    {/* For other markers */}
+    {props.location.allPlaces.map((otherMarker, index) => {
+      let restructuredLatLng = {
+        lat: parseFloat(otherMarker.latlng.lat),
+        lng: parseFloat(otherMarker.latlng.lng)
+      }
+      const selectedPlace = {
+        placeId: otherMarker.place_id,
+        formatted_address: otherMarker.formattedAddress,
+        name: otherMarker.name,
+        latlng: {
+          lat: parseFloat(otherMarker.latlng.lat),
+          lng: parseFloat(otherMarker.latlng.lng)
+        }
+      }
+      return <Marker 
+        key={index} 
+        position={restructuredLatLng} 
+        title={otherMarker.name}
+        onClick={()=> {
+          props.setSelectedPlace(selectedPlace);
+          props.setOpenFlyerPane(true)
+        }}
+        >
+        </Marker>
+    }
     )}
   </GoogleMap>
 );
@@ -163,5 +200,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
     setValidPlace,
     setSelectedPlace,
-    setOpenFlyerPane
+    setOpenFlyerPane,
+    getPlaces
 })(MapWithASearchBox);

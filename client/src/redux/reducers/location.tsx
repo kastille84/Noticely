@@ -5,6 +5,9 @@ export interface ILocation {
     ipLocation: {lat:number, lng:number}|null,
     validPlace: any|null,
     selectedPlace: any|null,
+    allPlaces: any[],
+    errors: any,
+    gettingPlaces: boolean
 }
 const initialState = {
     ipLocation: {
@@ -12,7 +15,10 @@ const initialState = {
         lng: -74.021347
     },
     validPlace: null,
-    selectedPlace: null
+    selectedPlace: null,
+    allPlaces: [],
+    errors: null,
+    gettingPlaces: false
 }
 
 export default (state:ILocation=initialState, action:Action) => {
@@ -31,6 +37,23 @@ export default (state:ILocation=initialState, action:Action) => {
         return {
             ...state,
             selectedPlace: action.payload
+        }
+    case constants.LOCATION.GET_PLACES:
+        return {
+            ...state,
+            gettingPlaces: true
+        }
+    case constants.LOCATION.GET_PLACES_SUCCESS:
+        return {
+            ...state,
+            gettingPlaces: false,
+            allPlaces: action.payload
+        }
+    case constants.LOCATION.GET_PLACES_ERROR:
+        return {
+            ...state,
+            gettingPlaces: false,
+            errors: action.payload
         }
     default: 
       return state;

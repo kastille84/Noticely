@@ -21,6 +21,11 @@ module.exports = buildSchema(`
     phone: String!
     email: String!
   }
+  type LatLngType {
+    lat: String!
+    lng: String!  
+  }
+
   type Flyer {
     _id: ID!
     placeId: String! 
@@ -31,6 +36,13 @@ module.exports = buildSchema(`
     contact: ContactType
     createdAt: String!
     updatedAt: String!
+  }
+  type Place {
+    _id: ID!
+    place_id: String!
+    formattedAddress: String!
+    name: String!
+    latlng: LatLngType!
   }
 
   input LatLng {
@@ -74,6 +86,7 @@ module.exports = buildSchema(`
     getUserInfo: User!
     loginUser(loginInput:LoginInput!):User!
     signS3(s3Input: S3Input!): S3!
+    getPlaces: [Place]!
   }
 
   type RootMutation {
