@@ -66,7 +66,7 @@ const Home: React.SFC<HomeProps> = (props) => {
         <SlidingPane 
           isOpen={props.flyer.openFlyerPane}
           from="left"
-          //width="100%"
+          width="50%"
           title={`Flyer Notices at ${((props.reduxLocation||{}).selectedPlace||{}).name||""}`}
           shouldCloseOnEsc
           onRequestClose={() => {
@@ -79,7 +79,7 @@ const Home: React.SFC<HomeProps> = (props) => {
             outline={false}
             onClick={()=>props.history.push("/make-flyer")}
           >Place flyer here</Button>
-
+          <hr/>
           <FlyerListByPlace />
         </SlidingPane>
       </div>

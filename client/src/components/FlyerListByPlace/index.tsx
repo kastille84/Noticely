@@ -6,6 +6,7 @@ import { StoreState } from '../../redux/root-reducer';
 import {ILocation} from '../../redux/reducers/location';
 import { IFlyer } from '../../redux/reducers/flyer';
 import {getFlyersByPlace} from '../../redux/actions/flyer';
+import FlyerListItem from '../FlyerListItem';
 
 export interface FlyerListByPlaceProps {
     reduxLocation: ILocation,
@@ -28,7 +29,7 @@ const FlyerListByPlace: React.SFC<FlyerListByPlaceProps> = ({
         <FlyerListByPlaceStyle>
             {reduxFlyer.flyers.length>0 && 
             reduxFlyer.flyers.map((flyer, idx) => (
-                <div>{flyer.heading}</div>
+                <FlyerListItem flyer={flyer} />
             ))}
             {reduxFlyer.flyers.length===0 &&
                 <p>There are no flyer notices here. Would you like to place one here?</p>

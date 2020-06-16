@@ -45,6 +45,7 @@ const MapWithASearchBox = compose(
           refs.searchBox = ref;
         },
         onPlacesChanged: () => {
+
           const places = refs.searchBox.getPlaces();
           console.log('places', places);
           // ******* Check Validity of Place
@@ -79,7 +80,8 @@ const MapWithASearchBox = compose(
             position: place.geometry.location,
           }));
           const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
-
+          console.log("markers", this.state.markers)
+          console.log("nextmarkers", nextMarkers)
           this.setState({
             center: nextCenter,
             markers: nextMarkers,
