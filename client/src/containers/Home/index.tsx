@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom'
 
-import {setIpLocation ,setSelectedPlace ,setFlyers, setOpenFlyerPane} from '../../redux/actions'
+import {setIpLocation ,setSelectedPlace ,setFlyersInit, setOpenFlyerPane} from '../../redux/actions'
 import { StoreState} from '../../redux/root-reducer';
 import { IUser } from "../../redux/reducers/user";
 import { IFlyer } from "../../redux/reducers/flyer";
@@ -14,11 +14,12 @@ import MapWithASearchBox from '../../components/Map/MapWithASearchBox';
 import "react-sliding-pane/dist/react-sliding-pane.css";
 import SlidingPane from 'react-sliding-pane';
 import { Button } from 'reactstrap';
+import FlyerListByPlace from '../../components/FlyerListByPlace';
 
 export interface HomeProps extends RouteComponentProps {
   setIpLocation: any,
   setSelectedPlace: any,
-  setFlyers: any,
+  setFlyersInit: any,
   setOpenFlyerPane: any,
   reduxLocation: ILocation,
   user: IUser,
@@ -39,7 +40,7 @@ const Home: React.SFC<HomeProps> = (props) => {
       props.setIpLocation(ltlng);
       setIpWasSet(true);
       setTimeout( () => {
-        props.setFlyers([]);
+        props.setFlyersInit([]);
       }, 1000);
       props.setSelectedPlace(null);
     })
@@ -79,6 +80,7 @@ const Home: React.SFC<HomeProps> = (props) => {
             onClick={()=>props.history.push("/make-flyer")}
           >Place flyer here</Button>
 
+          <FlyerListByPlace />
         </SlidingPane>
       </div>
     </HomeStyle>
@@ -93,6 +95,6 @@ const mapStateToProps = (state: StoreState) => ({
 export default connect(mapStateToProps, {
   setIpLocation,
   setSelectedPlace,
-  setFlyers,
+  setFlyersInit,
   setOpenFlyerPane
 })(Home);

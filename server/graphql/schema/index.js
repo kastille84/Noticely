@@ -80,6 +80,9 @@ module.exports = buildSchema(`
     fileName: String!
     fileType: String!
   }
+  input FlyersByPlaceInput {
+    place_id: String!
+  }
   
   type RootQuery {
     dummies: [Dummy!]!
@@ -87,6 +90,7 @@ module.exports = buildSchema(`
     loginUser(loginInput:LoginInput!):User!
     signS3(s3Input: S3Input!): S3!
     getPlaces: [Place]!
+    getFlyersByPlace(flyersByPlaceInput:FlyersByPlaceInput!): [Flyer]!
   }
 
   type RootMutation {

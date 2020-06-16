@@ -16,7 +16,7 @@ import './Map.css';
 
 const MapWithASearchBox = compose(
   withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyB_uJWRCI0GpbqK9qSMlpvcgB_Fs6npBsA&v=3.exp&libraries=geometry,drawing,places",
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyB_uJWRCI0GpbqK9qSMlpvcgB_Fs6npBsA&v=3&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }}>Loading..</div>,
     containerElement: <div style={{ height: `500px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
@@ -95,7 +95,7 @@ const MapWithASearchBox = compose(
     componentDidUpdate(prevProps,prevState) {
       if(!prevProps.location.gettingPlaces && this.props.location.gettingPlaces && this.props.location.allPlaces.length > 0) {
         console.log("reaches here")
-        this.setState({markers: [...this.state.markers, ...this.props.location.allPlaces]})
+        this.setState({markers: [ ...this.props.location.allPlaces]})
       }
     }
   }),
@@ -105,7 +105,7 @@ const MapWithASearchBox = compose(
   <GoogleMap
     ref={props.onMapMounted}
     defaultZoom={12}
-    center={props.center}
+    defaultCenter={props.center}
     onBoundsChanged={props.onBoundsChanged}
     className={"Map"}
   >
@@ -122,16 +122,20 @@ const MapWithASearchBox = compose(
         className={"Map_Input"}
       />
     </SearchBox>
-    {props.markers.map((marker, index) =>
-      <Marker 
+    {props.markers.map((marker, index) => {
+      console.log("props", props);
+      return <Marker 
         key={index} 
         position={marker.position} 
         title={marker.name}
         onClick={()=> {
+            props.onPlacesChanged()
             props.setOpenFlyerPane(true)
         }}
         >
         </Marker>
+
+    }
     )}
     {/* For other markers */}
     {props.location.allPlaces.map((otherMarker, index) => {

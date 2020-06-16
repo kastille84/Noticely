@@ -77,7 +77,20 @@ module.exports = {
         } catch(error) {
             console.dir(error)
         }
+    },
+    getFlyersByPlace: async(args, rec) => {
+        try {
+            const placeResponse = await Place.findOne({place_id: args.flyersByPlaceInput.place_id});
+            console.log('response', placeResponse)
+            if(!placeResponse) {
+                return [];
+            }
+            const flyerResponse = await Flyer.find({placeId: placeResponse._id});
+            console.log("flyerResponse", flyerResponse);
+            return flyerResponse;
 
-
+        } catch(error) {
+            console.log("error", error)
+        }
     }
 }

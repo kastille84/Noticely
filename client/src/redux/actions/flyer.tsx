@@ -77,11 +77,42 @@ export const setOpenFlyerPane = (bool: boolean) => {
   };
 };
 
-export const setFlyers = (flyers: any) => {
+export const setFlyersInit = (flyers: any) => {
   return {
-    type: constants.FLYER.SET_FLYERS,
+    type: constants.FLYER.SET_FLYERS_SUCCESS,
     payload: flyers
   };
+};
+
+export const getFlyersByPlace = (place_id: String) => {
+  return async (dispatch: Dispatch) => {
+    dispatch({type: constants.FLYER.SET_FLYERS});
+    try {
+      const response = await axios.post("graphql", JSON.stringify({
+        query: `
+          query {
+            getFlyersByPlace(flyersByPlaceInput: {place_id: "${place_id}"}) {
+              _id
+              placeId 
+              heading
+              description
+              images
+              contact {
+                phone
+                email
+              }
+              createdAt
+              updatedAt
+            }
+          }
+        `
+      }))
+      const {data:{data:{getFlyersByPlace}}} = response;
+      dispatch({type: constants.FLYER.SET_FLYERS_SUCCESS, payload: getFlyersByPlace});
+    } catch(error) {
+      dispatch({type: constants.FLYER.SET_FLYERS_FAIL, payload: error});
+    }
+  }
 };
 
 export const setSelectedFlyer = (flyer: any) => {
