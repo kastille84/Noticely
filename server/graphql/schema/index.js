@@ -29,6 +29,7 @@ module.exports = buildSchema(`
   type Flyer {
     _id: ID!
     placeId: String! 
+    user: String
     name: String!
     heading: String! 
     description: String!

@@ -94,6 +94,7 @@ export const getFlyersByPlace = (place_id: String) => {
             getFlyersByPlace(flyersByPlaceInput: {place_id: "${place_id}"}) {
               _id
               placeId 
+              user
               heading
               description
               images
@@ -118,7 +119,7 @@ export const getFlyersByPlace = (place_id: String) => {
 export const setSelectedFlyer = (flyer: any) => {
   return {
     type: constants.FLYER.SET_SELECTED_FLYER,
-    flyer: flyer
+    payload: flyer
   };
 };
 

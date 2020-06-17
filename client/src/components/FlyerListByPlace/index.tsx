@@ -29,7 +29,7 @@ const FlyerListByPlace: React.SFC<FlyerListByPlaceProps> = ({
         <FlyerListByPlaceStyle>
             {reduxFlyer.flyers.length>0 && 
             reduxFlyer.flyers.map((flyer, idx) => (
-                <FlyerListItem flyer={flyer} />
+                <FlyerListItem flyer={flyer}  />
             ))}
             {reduxFlyer.flyers.length===0 &&
                 <p>There are no flyer notices here. Would you like to place one here?</p>

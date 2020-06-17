@@ -67,6 +67,11 @@ export default (state:IFlyer=initialState, action:Action) => {
             flyerMade: false,
             errors: action.payload
         }
+    case constants.FLYER.SET_SELECTED_FLYER:
+        return {
+            ...state,
+            selectedFlyer: action.payload
+        }
     default: 
       return state;
   }
