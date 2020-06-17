@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent } from "react";
 import {connect} from 'react-redux';
-import { Modal, ModalBody, Input, Label, Button } from "reactstrap";
+import { Modal, ModalBody, Input, Label, Button, Spinner } from "reactstrap";
 
 import { FormWrapper, InputGroup } from "../Form/styled";
 import { validateEmail, validateConfirmPassword } from "../../utils/validate";
@@ -141,8 +141,17 @@ const Register: React.SFC<RegisterProps> = ({
                 required
               />
             </InputGroup>
-            <Button color="primary" type="submit" block>
-              Register
+            <Button 
+              color="primary" 
+              type="submit" 
+              block
+              disabled={user.registering? true:false}
+            >
+              {user.registering?
+                  <Spinner color="light"></Spinner>
+              :
+              "Register"
+              }
             </Button>
           </form>
         </FormWrapper>

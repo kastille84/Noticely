@@ -292,6 +292,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         type="submit"
                         color='primary'
                         outline={false}
+                        disabled={flyer.makingFlyer? true:false}
                     >
                         {flyer.makingFlyer?
                             <Spinner color="light"></Spinner>
