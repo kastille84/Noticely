@@ -70,8 +70,9 @@ const Home: React.SFC<HomeProps> = (props) => {
           title={`Flyer Notices at ${((props.reduxLocation||{}).selectedPlace||{}).name||""}`}
           shouldCloseOnEsc
           onRequestClose={() => {
-            props.setOpenFlyerPane(false)
-            props.setSelectedPlace(null)
+            props.setFlyersInit([]);
+            props.setOpenFlyerPane(false);
+            props.setSelectedPlace(null);
           }}
         >
           <Button

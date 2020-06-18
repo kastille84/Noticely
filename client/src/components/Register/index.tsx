@@ -158,7 +158,10 @@ const Register: React.SFC<RegisterProps> = ({
         <div className="switch-form text-center">
           <p>
             Already have an account?{" "}
-            <span onClick={() => changeModalType("signin")}>Signin</span>
+            <span 
+              onClick={() => changeModalType("signin")}
+              className="link"
+            >Signin</span>
           </p>
         </div>
       </ModalBody>

@@ -201,7 +201,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
     return (
         <div>
             <h2>Make Your Flyer</h2>
-            <p>at {(reduxLocation.selectedPlace||{}).name}</p>
+            <h5>at {(reduxLocation.selectedPlace||{}).name}</h5>
             <FormWrapper>
                 {renderErrors()}
                 <form onSubmit={handleSubmit}>
@@ -231,7 +231,9 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                     )}
                     <InputGroup>
                         {errors.description && <p className="text-danger">{errors.description}</p>}
-                        <Label for="description">Body</Label>
+                        <Label for="description">
+                            Body{isUserLoggedIn()?"":"*"}
+                        </Label>
                         <Input 
                             type="textarea" 
                             name="description" 
@@ -286,7 +288,10 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         </React.Fragment>                        
                     )
                     :
-                    <p>Anonymous users must put their contact info in the body. Signup to have more options for your flyers.</p>
+                    <React.Fragment>
+                        <cite className="text-muted d-block">*Anonymous users must put their contact info in the body.</cite>
+                        <cite className="text-muted d-block">SignIn/Register to have more options for your flyers.</cite>
+                    </React.Fragment>
                     }
                     <Button 
                         type="submit"

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const FormWrapper = styled.section`
-  padding: 1rem;
+  max-width: 600px;
 `;
 
 export const InputGroup = styled.div`

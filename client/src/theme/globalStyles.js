@@ -23,6 +23,11 @@ const GlobalStyle = createGlobalStyle`
     background-color: #61FAD9;
     border-color: #61FAD9;
   }
+
+  .link {
+    cursor: pointer;
+    color: #2A3DAD;
+  }
 `;
 
 export default GlobalStyle;

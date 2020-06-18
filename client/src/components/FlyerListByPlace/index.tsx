@@ -1,5 +1,6 @@
-import React, { useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
+import {Spinner} from 'reactstrap';
 
 import {FlyerListByPlaceStyle} from './styled';
 import { StoreState } from '../../redux/root-reducer';
@@ -19,11 +20,11 @@ const FlyerListByPlace: React.SFC<FlyerListByPlaceProps> = ({
     reduxFlyer,
     getFlyersByPlace
 }) => {
-
     useEffect(() => {
         // fetch all flyers from this location
         getFlyersByPlace(reduxLocation.selectedPlace.placeId);
     },[]);
+
 
     return ( 
         <FlyerListByPlaceStyle>
@@ -31,7 +32,8 @@ const FlyerListByPlace: React.SFC<FlyerListByPlaceProps> = ({
             reduxFlyer.flyers.map((flyer, idx) => (
                 <FlyerListItem flyer={flyer}  />
             ))}
-            {reduxFlyer.flyers.length===0 &&
+            {reduxFlyer.fetchingFlyers && <Spinner color="success" />}
+            {!reduxFlyer.fetchingFlyers && reduxFlyer.flyers.length===0 &&
                 <p>There are no flyer notices here. Would you like to place one here?</p>
             }
         </FlyerListByPlaceStyle>

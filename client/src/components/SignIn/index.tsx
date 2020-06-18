@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent } from "react";
 import {connect} from 'react-redux';
-import { Modal, ModalBody, Input, Label, Button } from "reactstrap";
+import { Modal, ModalBody, Input, Label, Button, Spinner } from "reactstrap";
 
 import { FormWrapper, InputGroup } from "../Form/styled";
 import { validateEmail } from "../../utils/validate";
@@ -111,15 +111,27 @@ const SignIn: React.SFC<SignInProps> = ({
                 </span>
               </div>
             </InputGroup>
-            <Button color="primary" type="submit" block>
-              SignIn
+            <Button 
+              color="primary" 
+              type="submit" 
+              block
+              disabled={user.loggingIn? true:false}
+            >
+              {user.loggingIn?
+                  <Spinner color="light"></Spinner>
+              :
+              "SignIn"
+              }
             </Button>
           </form>
         </FormWrapper>
         <div className="switch-form text-center">
           <p>
             Don't have an account?{" "}
-            <span onClick={() => changeModalType("register")}>Register</span>
+            <span 
+              onClick={() => changeModalType("register")}
+              className="link"
+            >Register</span>
           </p>
         </div>
       </ModalBody>
