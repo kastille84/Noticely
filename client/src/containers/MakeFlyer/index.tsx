@@ -175,12 +175,19 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
         }
 
         // construct flyer body to be sent
+        const images = [];
+        if(img1) {
+            images.push(img1)
+        }
+        if(img2) {
+            images.push(img2)
+        }
         const flyerBody = {
             placeId: reduxLocation.selectedPlace.placeId,
             formattedAddress: reduxLocation.selectedPlace.formatted_address,
             latlng: reduxLocation.selectedPlace.latlng,
             name: reduxLocation.selectedPlace.name,
-            images: [img1, img2],
+            images: images,
             heading: heading,
             description: description,
             phone: phoneSelected? phone:"",
