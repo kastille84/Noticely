@@ -5,6 +5,7 @@ import {RouteComponentProps} from 'react-router-dom';
 import { StoreState } from '../../redux/root-reducer';
 import { IFlyer } from '../../redux/reducers/flyer';
 import ViewFlyerStyled from './styled';
+//import PhotoView from '../../components/PhotoView';
 
 export interface ViewFlyerProps extends RouteComponentProps {
     flyer: IFlyer
