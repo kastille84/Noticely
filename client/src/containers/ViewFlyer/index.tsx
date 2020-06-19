@@ -1,20 +1,39 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
+import {RouteComponentProps} from 'react-router-dom';
+
 import { StoreState } from '../../redux/root-reducer';
 import { IFlyer } from '../../redux/reducers/flyer';
+import ViewFlyerStyled from './styled';
 
-export interface ViewFlyerProps {
+export interface ViewFlyerProps extends RouteComponentProps {
     flyer: IFlyer
 }
  
 const ViewFlyer: React.SFC<ViewFlyerProps> = ({
-    flyer
+    flyer,
+    history
 }) => {
+    let {selectedFlyer} = flyer;
+    selectedFlyer = selectedFlyer || {};
+    useEffect(()=> {
+        if(selectedFlyer === null) {
+            history.push("/")
+        }
+    },[]);
+
     return ( 
-        <div>
-            <h2>View Flyer</h2>
-            <p>{JSON.stringify(flyer.selectedFlyer)}</p>
-        </div>
+        <ViewFlyerStyled>
+            <h2>Flyer Notification</h2>
+            <div className="flyer-page">
+                <h3>{selectedFlyer.heading}</h3>
+                <hr />
+                {/* Images Logic goes here */}
+                <div className="flyer-page__body">
+                    {selectedFlyer.description}
+                </div>
+            </div>
+        </ViewFlyerStyled>
      );
 }
 
