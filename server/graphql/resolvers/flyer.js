@@ -63,8 +63,11 @@ module.exports = {
                     phone: args.flyerInput.contact.phone? args.flyerInput.contact.phone: ""
                 }
             });
-            const flyer = await newFlyer.save();
-
+            let flyer = await newFlyer.save();
+            await Flyer.populate(flyer, "user" ,(err, popFlyer) => {
+                flyer=popFlyer;
+            })
+            console.log('MakeFlyer', flyer)
             // save flyerId into user's flyer array ,if user is not anonymous
             if(Object.keys(jwtObj).length > 0) {
                 const user = await User.findById(flyer.user);
@@ -85,7 +88,7 @@ module.exports = {
             if(!placeResponse) {
                 return [];
             }
-            const flyerResponse = await Flyer.find({placeId: placeResponse._id});
+            const flyerResponse = await Flyer.find({placeId: placeResponse._id}).populate("user");
             console.log("flyerResponse", flyerResponse);
             return flyerResponse;
 

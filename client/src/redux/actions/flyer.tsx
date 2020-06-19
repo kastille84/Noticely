@@ -42,6 +42,11 @@ export const makeFlyer = (flyer: IFlyerData) => {
                             }) {
                                 _id
                                 placeId
+                                user {
+                                  _id
+                                  name
+                                  email
+                                }
                                 images
                                 heading
                                 description
@@ -94,7 +99,11 @@ export const getFlyersByPlace = (place_id: String) => {
             getFlyersByPlace(flyersByPlaceInput: {place_id: "${place_id}"}) {
               _id
               placeId 
-              user
+              user {
+                _id
+                name
+                email
+              }
               heading
               description
               images

@@ -10,8 +10,8 @@ module.exports = buildSchema(`
     _id: ID!
     name: String!
     email: String!
-    password: String!
-    token: String!
+    password: String
+    token: String
   }
   type S3 {
     signedRequest: String!
@@ -26,10 +26,22 @@ module.exports = buildSchema(`
     lng: String!  
   }
 
-  type Flyer {
+  type Flyer{
     _id: ID!
     placeId: String! 
-    user: String
+    user: User
+    name: String!
+    heading: String! 
+    description: String!
+    images: [String]!
+    contact: ContactType
+    createdAt: String!
+    updatedAt: String!
+  }
+  type FlyerByPlace {
+    _id: ID!
+    placeId: String! 
+    user: User
     name: String!
     heading: String! 
     description: String!
