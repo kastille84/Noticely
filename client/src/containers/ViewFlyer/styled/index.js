@@ -9,7 +9,12 @@ const Wrapper = styled.section`
         padding: 1rem;
         box-shadow: 6px 6px 14px 2px rgba(0,0,0,0.75);
         transform: rotate(359deg);
+
+        &__body {
+            white-space: pre;
+        }
     }
+
 `;
 
 const ViewFyerStyled = ({children}) => (

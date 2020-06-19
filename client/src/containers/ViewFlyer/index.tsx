@@ -17,7 +17,7 @@ const ViewFlyer: React.SFC<ViewFlyerProps> = ({
     let {selectedFlyer} = flyer;
     selectedFlyer = selectedFlyer || {};
     useEffect(()=> {
-        if(selectedFlyer === null) {
+        if(Object.keys(selectedFlyer).length ===0) {
             history.push("/")
         }
     },[]);
