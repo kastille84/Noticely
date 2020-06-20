@@ -12,6 +12,7 @@ import { ILocation } from '../../redux/reducers/location';
 import { IUser } from '../../redux/reducers/user';
 import {validateImage, validateEmail} from '../../utils/validate';
 
+
 import {makeFlyer} from '../../redux/actions';
 import { RouteComponentProps } from 'react-router';
 
@@ -85,7 +86,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
             }else {setErrors({...errors, img2:"Wrong File Type"})}
         } else {
             //set error 'max of 2 images'
-            setErrors({...errors, imgNum:"Max of 2 images"})
+            setErrors({...errors, imgNum:"Max of 2 images. This current image was not uploaded."})
         }
         // if(document && document.getElementById('flyerImg') && document.getElementById('flyerImg').value) {
         //     document.getElementById('flyerImg').value = '';
@@ -140,6 +141,8 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         console.log("here")
+        //reset error 'max of 2 images'
+        setErrors({...errors, imgNum:""})
         e.preventDefault()
         // validation
         const errorsObj: any = { ...errors };
@@ -240,6 +243,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         <React.Fragment>
                             <p>Num of Pics Uploaded: {imgNum}/2</p>
                             <InputGroup>
+                                {errors.imgNum && <p className="text-danger">{errors.imgNum}</p>}
                                 <Label for="img">Upload Image</Label>
                                 <Input 
                                     type="file" 
@@ -286,7 +290,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                             </InputGroup>
                             {selectedEmail &&
                                 <InputGroup>
-                                    <Label for="email">Email</Label>
+                                    <Label for="email">Email </Label>
                                     {errors.email && <p className="text-danger">{errors.email}</p>}
                                     <Input 
                                         type="email" 

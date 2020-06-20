@@ -6,6 +6,8 @@ import FlyerListItemStyle from './styled/index';
 import { IFlyer } from '../../redux/reducers/flyer';
 import { setSelectedFlyer } from '../../redux/actions';
 
+import {limitText} from '../../utils/functions';
+
 export interface FlyerListItemProps extends RouteComponentProps {
     flyer: any,
     setSelectedFlyer: any,
@@ -29,7 +31,7 @@ const FlyerListItem: React.SFC<FlyerListItemProps> = ({
         <FlyerListItemStyle>
             <div className="flyer-list-item-wrapper" onClick={handleClick} >
                 <h3>{flyer.heading}</h3>
-                <p>{flyer.description}</p>
+                <p>{limitText(flyer.description, 49)}</p>
             </div>
         </FlyerListItemStyle>
     );

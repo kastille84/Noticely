@@ -17,7 +17,7 @@ const ViewFlyer: React.SFC<ViewFlyerProps> = ({
     history
 }) => {
     let {selectedFlyer} = flyer;
-    selectedFlyer = selectedFlyer || {};
+    selectedFlyer = selectedFlyer? selectedFlyer : {};
     useEffect(()=> {
         if(Object.keys(selectedFlyer).length ===0) {
             history.push("/")
@@ -44,6 +44,18 @@ const ViewFlyer: React.SFC<ViewFlyerProps> = ({
                 <div className="flyer-page__body">
                     {selectedFlyer.description}
                 </div>
+                {Object.keys(selectedFlyer.contact).length > 0 && (
+                <React.Fragment>
+                    <hr/>
+                    <h5>Contact Info</h5>
+                    {selectedFlyer.contact.email && (
+                        <p>Email: {selectedFlyer.contact.email}</p>
+                    )}
+                    {selectedFlyer.contact.phone && (
+                        <p>Phone: {selectedFlyer.contact.phone}</p>
+                    )}
+                </React.Fragment>
+                )} 
             </div>
         </ViewFlyerStyled>
      );

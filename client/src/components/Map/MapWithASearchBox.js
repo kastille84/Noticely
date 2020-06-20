@@ -13,11 +13,12 @@ import  SearchBox from "react-google-maps/lib/components/places/SearchBox";
 import { connect } from 'react-redux';
 import {setSelectedPlace, setValidPlace, setOpenFlyerPane, getPlaces} from '../../redux/actions';
 import './Map.css';
+import { Spinner } from 'reactstrap';
 
 const MapWithASearchBox = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyB_uJWRCI0GpbqK9qSMlpvcgB_Fs6npBsA&v=3&libraries=geometry,drawing,places",
-    loadingElement: <div style={{ height: `100%` }}>Loading..</div>,
+    loadingElement: <div style={{ height: `100%` }}><Spinner color="success"></Spinner></div>,
     containerElement: <div style={{ height: `500px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),

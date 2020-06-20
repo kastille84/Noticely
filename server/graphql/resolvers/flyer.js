@@ -51,13 +51,15 @@ module.exports = {
                 locationExists = await newLocation.save();
             } 
             console.log("locationExists", locationExists)
+            console.log("typeof args.flyerInput.images",typeof args.flyerInput.images )
+            console.log("args.flyerInput.images",args.flyerInput.images )
             //set flyer
             const newFlyer = new Flyer({
                 user: jwtObj._id? jwtObj._id: null,
                 placeId: locationExists._id,
                 heading: args.flyerInput.heading,
                 description: args.flyerInput.description,
-                images: args.flyerInput.images,
+                images: args.flyerInput.images[0].split(","),
                 contact: {
                     email: args.flyerInput.contact.email? args.flyerInput.contact.email: (jwtObj.email?jwtObj.email:""),
                     phone: args.flyerInput.contact.phone? args.flyerInput.contact.phone: ""
@@ -67,6 +69,7 @@ module.exports = {
             await Flyer.populate(flyer, "user" ,(err, popFlyer) => {
                 flyer=popFlyer;
             })
+            console.log('MakeFlyer', flyer)
             console.log('MakeFlyer', flyer)
             // save flyerId into user's flyer array ,if user is not anonymous
             if(Object.keys(jwtObj).length > 0) {

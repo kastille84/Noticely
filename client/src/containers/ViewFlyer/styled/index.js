@@ -8,10 +8,10 @@ const Wrapper = styled.section`
         border: 1px solid #8492a6;
         padding: 1rem;
         box-shadow: 6px 6px 14px 2px rgba(0,0,0,0.75);
-        transform: rotate(359deg);
 
         &__body {
-            white-space: pre;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
     }
 
