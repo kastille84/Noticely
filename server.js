@@ -4,12 +4,16 @@ const path = require("path");
 const graphqlHttp = require("express-graphql");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const sslRedirect = require("heroku-ssl-redirect");
 
 //import Schema and Resolver
 const graphQLSchema = require("./server/graphql/schema/index");
 const graphQLResolvers = require("./server/graphql/resolvers/index");
 
 const app = express();
+
+// redirect to https for heroku
+app.use(sslRedirect());
 
 app.use(bodyParser.json());
 
