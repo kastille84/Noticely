@@ -17,13 +17,14 @@ import { Spinner } from 'reactstrap';
 
 const MapWithASearchBox = compose(
   withProps({
-    googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_KEY}&v=3&libraries=geometry,drawing,places`,
+    googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_KEY}&v=3&libraries=geometry,drawing,places`,
     loadingElement: <div style={{ height: `100%` }}><Spinner color="success"></Spinner></div>,
     containerElement: <div style={{ height: `500px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
   lifecycle({
     componentWillMount() {
+      console.log("process", process.env)
       const refs = {}
 
       this.setState({
