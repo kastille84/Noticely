@@ -6,6 +6,10 @@ const StyledNavigation = styled.div`
   }
   & .navbar-brand {
     color: ${props=>props.theme.colors.logo};
+    font-size: 1.6rem;
+  }
+ .navbar-light .navbar-nav .nav-item .nav-link {
+    color: ${props=>props.theme.colors.white} !important;
   }
 `;
 

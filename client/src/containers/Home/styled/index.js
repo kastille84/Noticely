@@ -8,8 +8,11 @@ const Wrapper = styled.section`
     } 
 
     & .BtnControls {
-        display: inline-block;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
         margin-bottom: 20px;
+        width: 100%;
     }
 `;
 

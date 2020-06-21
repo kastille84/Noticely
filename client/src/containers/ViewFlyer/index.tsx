@@ -7,6 +7,7 @@ import { StoreState } from '../../redux/root-reducer';
 import { IFlyer } from '../../redux/reducers/flyer';
 import ViewFlyerStyled from './styled';
 import PhotoView from '../../components/PhotoView';
+import ViewFyerStyled from './styled';
 
 export interface ViewFlyerProps extends RouteComponentProps {
     flyer: IFlyer
@@ -32,33 +33,39 @@ const ViewFlyer: React.SFC<ViewFlyerProps> = ({
         }
     }
 
-    return ( 
-        <ViewFlyerStyled>
-            <h2>Flyer Notification</h2>
-            <div className="flyer-page">
-                <h3>{selectedFlyer.heading}</h3>
-                <hr />
-    <cite className="text-muted">Posted by: {determineUserOrAnonymous()} on {moment.unix(selectedFlyer.createdAt/1000).format("MM/DD/YY")}</cite>
-                {/* Images Logic goes here */}
-                <PhotoView images={selectedFlyer.images||[]} editable={false}/>
-                <div className="flyer-page__body">
-                    {selectedFlyer.description}
+    if(Object.keys(selectedFlyer).length > 0) {
+        return ( 
+            <ViewFlyerStyled>
+                <h2>Flyer Notification</h2>
+                <div className="flyer-page">
+                    <h3>{selectedFlyer.heading}</h3>
+                    <hr />
+            <cite className="text-muted">Posted by: {determineUserOrAnonymous()} on {moment.unix(selectedFlyer.createdAt/1000).format("MM/DD/YY")}</cite>
+                    {/* Images Logic goes here */}
+                    <PhotoView images={selectedFlyer.images||[]} editable={false}/>
+                    <div className="flyer-page__body">
+                        {selectedFlyer.description}
+                    </div>
+                    {Object.keys(selectedFlyer.contact).length > 0 && (
+                    <React.Fragment>
+                        <hr/>
+                        <h5>Contact Info</h5>
+                        {selectedFlyer.contact.email && (
+                            <p>Email: {selectedFlyer.contact.email}</p>
+                        )}
+                        {selectedFlyer.contact.phone && (
+                            <p>Phone: {selectedFlyer.contact.phone}</p>
+                        )}
+                    </React.Fragment>
+                    )} 
                 </div>
-                {Object.keys(selectedFlyer.contact).length > 0 && (
-                <React.Fragment>
-                    <hr/>
-                    <h5>Contact Info</h5>
-                    {selectedFlyer.contact.email && (
-                        <p>Email: {selectedFlyer.contact.email}</p>
-                    )}
-                    {selectedFlyer.contact.phone && (
-                        <p>Phone: {selectedFlyer.contact.phone}</p>
-                    )}
-                </React.Fragment>
-                )} 
-            </div>
-        </ViewFlyerStyled>
-     );
+            </ViewFlyerStyled>
+         );
+    } else {
+        return <ViewFyerStyled>
+            <p>loading..</p>
+        </ViewFyerStyled>
+    }
 }
 
 const mapStateToProps = (state:StoreState) => ({

@@ -21,7 +21,7 @@ import Register from '../Register';
 
 import StyledNavigation from './styled';
 // types
-import {IUser} from '../../redux/reducers/user';
+import user, {IUser} from '../../redux/reducers/user';
 import {StoreState} from '../../redux/root-reducer';
 
 import {logoutUser} from "../../redux/actions";
@@ -51,15 +51,21 @@ const Navigation: React.SFC<NavigationProps> = (props) => {
         <NavbarToggler onClick={toggleCollapse} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            {isLoggedIn() &&
+              <NavItem>
+                <NavLink href="/">Home</NavLink>
+              </NavItem>
+            {/* {isLoggedIn() &&
               <NavItem>
                 <NavLink href="/manage">Manage</NavLink>
               </NavItem>            
-            }
+            } */}
           </Nav>
           <NavbarText>
-            {isLoggedIn()? 
-              <Button color="primary" onClick={()=>props.logoutUser()}>Logout</Button>
+            {isLoggedIn()? (
+              <React.Fragment>
+                <Button color="primary" onClick={()=>props.logoutUser()}>Logout</Button>
+              </React.Fragment>
+            )
               :
               <Button color="primary" onClick={()=>toggleModal()}>Sign In</Button>
             }

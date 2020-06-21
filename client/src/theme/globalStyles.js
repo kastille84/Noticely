@@ -28,6 +28,11 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
     color: #2A3DAD;
   }
+
+  .slide-pane__header {
+    background: #4863FA;
+    color: #ffffff;
+  }
 `;
 
 export default GlobalStyle;

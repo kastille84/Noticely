@@ -7,7 +7,7 @@ export interface IFlyer {
     makingFlyer: boolean,
     fetchingFlyers: boolean,
     flyers: any[],
-    selectedFlyer: any | null,
+    selectedFlyer: any,
     deletedFlyer: boolean,
     errors: any
 }
@@ -17,7 +17,7 @@ const initialState = {
     makingFlyer: false,
     fetchingFlyers: false,
     flyers: [],
-    selectedFlyer: null,
+    selectedFlyer: {},
     deletedFlyer: false,
     errors: null
 }

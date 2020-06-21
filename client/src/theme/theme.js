@@ -5,6 +5,7 @@ export default {
     blueLight: '#4863FA',
     green: '#4CAD98',
     greenLight: '#61FAD9',
+    white: "#FFFFFF",
     textPrimary: '#060d46',
     textSecondary: '#8492a6',
   },

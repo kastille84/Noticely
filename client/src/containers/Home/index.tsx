@@ -4,7 +4,7 @@ import {RouteComponentProps} from 'react-router-dom'
 
 import {setIpLocation ,setSelectedPlace ,setFlyersInit, setOpenFlyerPane} from '../../redux/actions'
 import { StoreState} from '../../redux/root-reducer';
-import { IUser } from "../../redux/reducers/user";
+import user, { IUser } from "../../redux/reducers/user";
 import { IFlyer } from "../../redux/reducers/flyer";
 import { ILocation} from "../../redux/reducers/location";
 
@@ -60,6 +60,7 @@ const Home: React.SFC<HomeProps> = (props) => {
           >
             {showMap? "Hide":"Show"} Map
           </button>
+          <p>{Object.keys(props.user.currentUser).length > 0? props.user.currentUser.name: 'Anonymous User'}</p>
         </div>
         {props.reduxLocation.validPlace === false && <p className="text-danger">Your search is too broad. Please search a business location or address.</p>}
         {ipWasSet && showMap && <MapWithASearchBox/>}
@@ -90,7 +91,8 @@ const Home: React.SFC<HomeProps> = (props) => {
 
 const mapStateToProps = (state: StoreState) => ({
   reduxLocation: state.location,
-  flyer: state.flyer
+  flyer: state.flyer,
+  user: state.user
 });
 
 export default connect(mapStateToProps, {
