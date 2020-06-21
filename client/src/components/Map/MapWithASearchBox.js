@@ -49,7 +49,7 @@ const MapWithASearchBox = compose(
 
           const places = refs.searchBox.getPlaces();
           console.log('places', places);
-          // ******* Check Validity of Place
+          // ******** Check Validity of Place
           if( !checkPlaceValidity(places, this.props) ) {
               return;
           }
