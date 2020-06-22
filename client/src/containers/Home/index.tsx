@@ -15,6 +15,7 @@ import "react-sliding-pane/dist/react-sliding-pane.css";
 import SlidingPane from 'react-sliding-pane';
 import { Button } from 'reactstrap';
 import FlyerListByPlace from '../../components/FlyerListByPlace';
+import {getWindowWidth} from '../../utils/functions';
 
 export interface HomeProps extends RouteComponentProps {
   setIpLocation: any,
@@ -67,7 +68,7 @@ const Home: React.SFC<HomeProps> = (props) => {
         <SlidingPane 
           isOpen={props.flyer.openFlyerPane}
           from="left"
-          width="50%"
+          width={getWindowWidth()}
           title={`Flyer Notices at ${((props.reduxLocation||{}).selectedPlace||{}).name||""}`}
           shouldCloseOnEsc
           onRequestClose={() => {
