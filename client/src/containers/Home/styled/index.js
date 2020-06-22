@@ -14,6 +14,17 @@ const Wrapper = styled.section`
         margin-bottom: 20px;
         width: 100%;
     }
+
+    & .about {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 1rem;
+        background-color: #eee;
+
+        li {
+            list-style: none;
+        }
+    }
 `;
 
 export const HomeStyle = ({children}) => {
