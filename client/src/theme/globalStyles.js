@@ -33,6 +33,21 @@ const GlobalStyle = createGlobalStyle`
     background: #4863FA;
     color: #ffffff;
   }
+
+  // Animations
+  @keyframes blueToLightBlue {
+    0% {
+      border-top-color: #FAB156
+    }
+
+    50% {
+      border-top-color: #4863FA
+    }
+
+    100% {
+      border-top-color: #FAB156
+    }
+  }
 `;
 
 export default GlobalStyle;

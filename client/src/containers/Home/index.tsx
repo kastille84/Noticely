@@ -78,7 +78,7 @@ const Home: React.SFC<HomeProps> = (props) => {
           isOpen={props.flyer.openFlyerPane}
           from="left"
           width={getWindowWidth()}
-          title={`Flyer Notices at ${((props.reduxLocation||{}).selectedPlace||{}).name||""}`}
+          title={`${((props.reduxLocation||{}).selectedPlace||{}).name||""}`}
           shouldCloseOnEsc
           onRequestClose={() => {
             props.setFlyersInit([]);
@@ -103,9 +103,9 @@ const Home: React.SFC<HomeProps> = (props) => {
           It used to be that if you wanted to make notices or spread information, you would have to:
         </p>
         <ul>
-          <li>Design flyer and print out many copies</li>
-          <li>Find locations with hight foot traffic to place the flyers.</li>
-          <li>Physically walk to each location</li>
+          <li>Design flyer and print out many copies.</li>
+          <li>Find locations with high foot traffic to place the flyers.</li>
+          <li>Physically walk to each location.</li>
           <li>Many times, the location does not have a designated area to place your flyer.</li>
         </ul>
         <h2>How does Noticely help?</h2>

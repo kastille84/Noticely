@@ -17,3 +17,7 @@ export const getWindowWidth = () => {
       return "90%";
     }
   };
+
+export const IsEmptyObj = (obj:any):boolean => {
+  return Object.keys(obj).length === 0;
+}
