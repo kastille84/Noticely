@@ -8,6 +8,7 @@ export interface IFlyer {
     fetchingFlyers: boolean,
     flyers: any[],
     selectedFlyer: any,
+    wishToDeleteFlyer: boolean,
     deletedFlyer: boolean,
     errors: any
 }
@@ -18,6 +19,7 @@ const initialState = {
     fetchingFlyers: false,
     flyers: [],
     selectedFlyer: {},
+    wishToDeleteFlyer: false,
     deletedFlyer: false,
     errors: null
 }
@@ -71,6 +73,11 @@ export default (state:IFlyer=initialState, action:Action) => {
         return {
             ...state,
             selectedFlyer: action.payload
+        }
+    case constants.FLYER.SET_WISH_TO_DELETE_FLYER: 
+        return {
+            ...state,
+            wishToDeleteFlyer: action.payload
         }
     default: 
       return state;

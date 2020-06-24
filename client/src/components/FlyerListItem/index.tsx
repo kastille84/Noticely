@@ -7,7 +7,7 @@ import {faTimes, faEdit} from '@fortawesome/free-solid-svg-icons';
 
 import FlyerListItemStyle from './styled/index';
 import { IFlyer } from '../../redux/reducers/flyer';
-import { setSelectedFlyer } from '../../redux/actions';
+import { setSelectedFlyer, setWishToDeleteFlyer } from '../../redux/actions';
 
 import {limitText} from '../../utils/functions';
 
@@ -15,6 +15,7 @@ export interface FlyerListItemProps extends RouteComponentProps {
     flyer: any,
     belongsToUser: boolean,
     setSelectedFlyer: any,
+    setWishToDeleteFlyer: any,
     history: any
 }
  
@@ -22,6 +23,7 @@ const FlyerListItem: React.SFC<FlyerListItemProps> = ({
     flyer,
     belongsToUser,
     setSelectedFlyer,
+    setWishToDeleteFlyer,
     history
 }) => {
 
@@ -44,12 +46,17 @@ const FlyerListItem: React.SFC<FlyerListItemProps> = ({
                         <Button
                             color="warning"
                             size="sm"
+                            
                         >
                             <FontAwesomeIcon icon={faEdit} />
                         </Button>
                         <Button
                             color="danger"
                             size="sm"
+                            onClick={(e)=>{
+                                e.stopPropagation();
+                                setWishToDeleteFlyer(true)
+                            } }
                         >
                             {" "}<FontAwesomeIcon icon={faTimes} />{" "}
                         </Button>
@@ -62,5 +69,6 @@ const FlyerListItem: React.SFC<FlyerListItemProps> = ({
 }
  
 export default connect( null,{
-    setSelectedFlyer
+    setSelectedFlyer,
+    setWishToDeleteFlyer
 })(withRouter(FlyerListItem));

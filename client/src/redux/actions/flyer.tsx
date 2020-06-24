@@ -132,6 +132,13 @@ export const setSelectedFlyer = (flyer: any) => {
   };
 };
 
+export const setWishToDeleteFlyer = (bool: boolean) => {
+  return {
+    type: constants.FLYER.SET_WISH_TO_DELETE_FLYER,
+    payload: bool
+  }
+}
+
 export const setNewFlyer = (newFlyer: any) => {
   return {
     type: constants.FLYER.SET_NEW_FLYER,
@@ -152,3 +159,5 @@ export const setDeletedFlyer = (bool: boolean) => {
     bool: bool
   };
 };
+
+

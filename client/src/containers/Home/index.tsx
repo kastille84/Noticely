@@ -10,6 +10,7 @@ import { ILocation} from "../../redux/reducers/location";
 
 import {HomeStyle} from './styled';
 import MapWithASearchBox from '../../components/Map/MapWithASearchBox';
+import FlyerListSlidePane from '../../components/FlyerListSlidePane'
 
 import "react-sliding-pane/dist/react-sliding-pane.css";
 import SlidingPane from 'react-sliding-pane';
@@ -74,18 +75,8 @@ const Home: React.SFC<HomeProps> = (props) => {
         </div>
         {props.reduxLocation.validPlace === false && <p className="text-danger">Your search is too broad. Please search a business location or address.</p>}
         {ipWasSet && showMap && <MapWithASearchBox/>}
-        <SlidingPane 
-          isOpen={props.flyer.openFlyerPane}
-          from="left"
-          width={getWindowWidth()}
-          title={`${((props.reduxLocation||{}).selectedPlace||{}).name||""}`}
-          shouldCloseOnEsc
-          onRequestClose={() => {
-            props.setFlyersInit([]);
-            props.setOpenFlyerPane(false);
-            props.setSelectedPlace(null);
-          }}
-        >
+        {/* SLIDE PANE  */}
+        <FlyerListSlidePane>
           <Button
             color="primary"
             outline={false}
@@ -93,7 +84,7 @@ const Home: React.SFC<HomeProps> = (props) => {
           >Place flyer here</Button>
           <hr/>
           <FlyerListByPlace />
-        </SlidingPane>
+        </FlyerListSlidePane>
       </div>
       {/* About Content */}
       <div className="about">
