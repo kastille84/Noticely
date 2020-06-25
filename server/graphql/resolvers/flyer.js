@@ -84,7 +84,7 @@ module.exports = {
             console.dir(error)
         }
     },
-    getFlyersByPlace: async(args, rec) => {
+    getFlyersByPlace: async(args, req) => {
         try {
             const placeResponse = await Place.findOne({place_id: args.flyersByPlaceInput.place_id});
             console.log('response', placeResponse)
@@ -96,7 +96,36 @@ module.exports = {
             return flyerResponse;
 
         } catch(error) {
-            console.log("error", error)
+            console.log("error", error);
+        }
+    },
+    deleteFlyer: async(args, req) => {
+        try {
+            const flyerResponse = await Flyer.findByIdAndRemove(args.flyerId).populate("user");
+            // remove images related to this flyer
+
+            // find the user
+            const userResponse = await User.findById(flyerResponse.user._id);
+            console.log('1 userResponse', userResponse)
+            let newUserFlyersArr = [...userResponse.flyers].filter(flyerObjId => flyerObjId.toString() !==args.flyerId)
+            console.log("2 newUserFlyersArr", newUserFlyersArr);
+            // update/remove flyer from user's flyers property
+            const userUpdateResponse = await User.findByIdAndUpdate(userResponse._id, {flyers: newUserFlyersArr});
+            console.log("3 userUPdateResponse", userUpdateResponse)
+            // use all other flyer to see if they have flyerResponse's placeId
+            const allFlyersResponse = await Flyer.find({placeId: flyerResponse.placeId});
+            console.log("4 allFlyersResponse", allFlyersResponse);
+            // If you get results, do nothing
+            // If it comes out empty, it means no other flyer is at that place. Delete that place.
+            if (!allFlyersResponse.length) {
+                const placeResponse = await Place.findOneAndRemove({_id:flyerResponse.placeId});
+                console.log("5 placeResponse", placeResponse)
+            }
+            console.log("6 flyerResponse", flyerResponse)
+            return flyerResponse;
+
+        } catch(error) {
+            console.log("error", error);
         }
     }
 }

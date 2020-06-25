@@ -109,6 +109,7 @@ module.exports = buildSchema(`
   type RootMutation {
     registerUser(userInput:UserInput!):User! 
     makeFlyer(flyerInput:FlyerInput!): Flyer!
+    deleteFlyer(flyerId: ID!): Flyer!
   }
 
   schema {

@@ -9,7 +9,7 @@ export interface IFlyer {
     flyers: any[],
     selectedFlyer: any,
     wishToDeleteFlyer: boolean,
-    deletedFlyer: boolean,
+    deletingFlyer: boolean,
     errors: any
 }
 const initialState = {
@@ -20,7 +20,7 @@ const initialState = {
     flyers: [],
     selectedFlyer: {},
     wishToDeleteFlyer: false,
-    deletedFlyer: false,
+    deletingFlyer: false,
     errors: null
 }
 
@@ -78,6 +78,22 @@ export default (state:IFlyer=initialState, action:Action) => {
         return {
             ...state,
             wishToDeleteFlyer: action.payload
+        }
+    case constants.FLYER.SET_DELETING_FLYER:
+        return {
+            ...state,
+            deletingFlyer: action.payload
+        }
+    case constants.FLYER.SET_DELETING_FLYER_SUCCESS:
+        return {
+            ...state,
+            deletingFlyer: false
+        }
+    case constants.FLYER.SET_DELETING_FLYER_FAIL:
+        return {
+            ...state,
+            deletingFlyer: false,
+            errors: action.payload            
         }
     default: 
       return state;

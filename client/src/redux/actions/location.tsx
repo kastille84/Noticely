@@ -65,7 +65,7 @@ export const getPlaces = () => {
             dispatch({type: constants.LOCATION.GET_PLACES_SUCCESS, payload:getPlaces})
 
         } catch(error) {
-            dispatch({type: constants.LOCATION.GET_PLACES_ERROR, payload:error})
+            dispatch({type: constants.LOCATION.GET_PLACES_ERROR, payload:error.response.data.errors})
         }
     }
 }

@@ -34,6 +34,12 @@ const FlyerListItem: React.SFC<FlyerListItemProps> = ({
         history.push('/view-flyer');
     }
 
+    const handleDelete = () => {
+        // set selected flyer
+        setSelectedFlyer(flyer);
+        setWishToDeleteFlyer(true)
+    }
+
     return ( 
         <FlyerListItemStyle>
             <div className={`flyer-list-item-wrapper ${belongsToUser?"belongsToUser":""}`} onClick={handleClick} >
@@ -55,7 +61,7 @@ const FlyerListItem: React.SFC<FlyerListItemProps> = ({
                             size="sm"
                             onClick={(e)=>{
                                 e.stopPropagation();
-                                setWishToDeleteFlyer(true)
+                                handleDelete();
                             } }
                         >
                             {" "}<FontAwesomeIcon icon={faTimes} />{" "}

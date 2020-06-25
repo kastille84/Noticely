@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import {setSelectedPlace, setValidPlace, setOpenFlyerPane, getPlaces} from '../../redux/actions';
 import './Map.css';
 import { Spinner } from 'reactstrap';
+import {IsEmptyObj} from '../../utils/functions';
 
 const MapWithASearchBox = compose(
   withProps({
@@ -96,9 +97,18 @@ const MapWithASearchBox = compose(
       this.props.getPlaces();
     },
     componentDidUpdate(prevProps,prevState) {
-      if(!prevProps.location.gettingPlaces && this.props.location.gettingPlaces && this.props.location.allPlaces.length > 0) {
-        console.log("reaches here")
-        this.setState({markers: [ ...this.props.location.allPlaces]})
+      // if(!prevProps.location.gettingPlaces && this.props.location.gettingPlaces && this.props.location.allPlaces.length > 0) {
+      //   console.log("reaches here")
+      //   this.setState({markers: [ ...this.props.location.allPlaces]})
+      // }
+      console.log('reched before')
+      if(prevProps.location.selectedPlace !==null &&
+        !IsEmptyObj(prevProps.location.selectedPlace) && 
+        this.props.location.selectedPlace===null) 
+        {
+        //force update
+        console.log('reached here')
+        this.setState({state: this.state});
       }
     }
   }),
@@ -200,7 +210,7 @@ const mapStateToProps = (state) => {
     return {
         location: state.location,
         //userRedux: state.userRedux,
-        //flyerRedux: state.flyerRedux
+        flyerRedux: state.flyerRedux
     }
 }
 
