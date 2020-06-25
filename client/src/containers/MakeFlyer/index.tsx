@@ -2,6 +2,7 @@ import React, {useState, useEffect, FormEvent} from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {Label, Input, Button, Spinner} from 'reactstrap';
+import {uuid} from 'uuidv4';
 
 import { FormWrapper, InputGroup, CheckBoxContainer } from "../../components/Form/styled";
 import agent from '../../agent';
@@ -59,7 +60,6 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
     }
 
     const fileChanged = (e:React.ChangeEvent<HTMLInputElement>) => {
-        console.dir(e.target.value)
         if(imgNum===0) {
             // reset error
             setErrors({...errors, img1:""});

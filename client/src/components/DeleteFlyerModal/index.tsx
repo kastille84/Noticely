@@ -1,12 +1,14 @@
 import React from 'react';
 import { Modal, ModalBody, ModalFooter, Button } from "reactstrap";
 import {connect} from 'react-redux';
+import {withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { StoreState } from '../../redux/root-reducer';
 import { IFlyer } from '../../redux/reducers/flyer';
 import {deleteFlyer} from '../../redux/actions';
+import { RouterProps } from 'react-router';
 
-export interface DeleteFlyerModalProps {
+export interface DeleteFlyerModalProps extends RouteComponentProps {
     modal: boolean,
     toggleModal: any,
     flyer: IFlyer,
@@ -17,7 +19,8 @@ const DeleteFlyerModal: React.SFC<DeleteFlyerModalProps> = ({
     modal,
     toggleModal,
     flyer,
-    deleteFlyer
+    deleteFlyer,
+    history
 }) => {
 
     const renderErrors = () => {
@@ -38,7 +41,7 @@ const DeleteFlyerModal: React.SFC<DeleteFlyerModalProps> = ({
                 <Button 
                     color="primary" 
                     onClick={()=> {
-                        deleteFlyer(flyer.selectedFlyer);
+                        deleteFlyer(flyer.selectedFlyer, history.push);
                     }}
                 >Yes</Button>{' '}
                 <Button color="secondary" onClick={()=>toggleModal(false)}>No</Button>
@@ -53,4 +56,4 @@ const mapStateToProps = (state: StoreState) => ({
 
 export default connect(mapStateToProps, {
     deleteFlyer
-})(DeleteFlyerModal);
+})(withRouter(DeleteFlyerModal));

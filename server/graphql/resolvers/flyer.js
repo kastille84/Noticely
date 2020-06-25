@@ -1,5 +1,6 @@
 //packages
 const jwt = require("jsonwebtoken");
+const {uuid} = require("uuidv4");
 
 //Model
 const User = require('../../models/User');
@@ -13,8 +14,13 @@ const S3_BUCKET = process.env.S3_BUCKET_NAME;
 
 module.exports = {
     signS3: async(args, req) => {
+        const uniqueFileName = 
+            (args.s3Input.fileName.slice(0,args.s3Input.fileName.length-4))
+            +"__"
+            + uuid()
+            + (args.s3Input.fileName.slice(args.s3Input.fileName.length-4))
         const s3 = new aws.S3();
-        const fileName = args.s3Input.fileName;
+        const fileName = uniqueFileName;
         const fileType = args.s3Input.fileType;
         const s3Params = {
             Bucket: S3_BUCKET,
@@ -103,7 +109,26 @@ module.exports = {
         try {
             const flyerResponse = await Flyer.findByIdAndRemove(args.flyerId).populate("user");
             // remove images related to this flyer
-
+            if(flyerResponse.images.length >0) {
+                const imagesToDelete = [];
+                for( let img of flyerResponse.images) {
+                    imagesToDelete.push({
+                        Key: img.slice(34, img.length)
+                    })
+                }
+                console.log('imagesToDelete', imagesToDelete);
+                let paramS3 = {
+                    Bucket: S3_BUCKET,
+                    Delete: {
+                        Objects: imagesToDelete
+                    }
+                }
+                const s3 = new aws.S3();
+                s3.deleteObjects(paramS3, function(err, data){
+                    if(err){"errS3",console.log(err)}
+                    else console.log(data)
+                })
+            }
             // find the user
             const userResponse = await User.findById(flyerResponse.user._id);
             console.log('1 userResponse', userResponse)

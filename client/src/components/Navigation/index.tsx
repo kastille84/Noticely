@@ -54,11 +54,11 @@ const Navigation: React.SFC<NavigationProps> = (props) => {
               <NavItem>
                 <NavLink href="/">Home</NavLink>
               </NavItem>
-            {/* {isLoggedIn() &&
+            {isLoggedIn() &&
               <NavItem>
                 <NavLink href="/manage">Manage</NavLink>
               </NavItem>            
-            } */}
+            }
           </Nav>
           <NavbarText>
             {isLoggedIn()? (

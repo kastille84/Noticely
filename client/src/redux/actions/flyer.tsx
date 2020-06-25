@@ -139,7 +139,7 @@ export const setWishToDeleteFlyer = (bool: boolean) => {
   }
 }
 
-export const deleteFlyer = (flyer:any) => {
+export const deleteFlyer = (flyer:any, redirectCb:any) => {
   return async(dispatch:Dispatch) => {
     // set DeletingFlyer true
     dispatch({type: constants.FLYER.SET_DELETING_FLYER, payload: true})
@@ -175,6 +175,8 @@ export const deleteFlyer = (flyer:any) => {
       dispatch({type: constants.FLYER.OPEN_FLYER_PANE, payload: false})
       // selectedFlyer should be {}
       dispatch({type: constants.FLYER.SET_SELECTED_FLYER, payload: {}})
+      //redirect to manage
+      redirectCb("/manage");
     } catch(error) {
       dispatch({type: constants.FLYER.SET_DELETING_FLYER_FAIL, payload: error.response.data.errors});
     }
