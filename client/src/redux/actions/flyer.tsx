@@ -216,15 +216,21 @@ export const deleteFlyer = (flyer:any, redirectCb:any) => {
       dispatch({type: constants.FLYER.OPEN_FLYER_PANE, payload: false})
       // selectedFlyer should be {}
       dispatch({type: constants.FLYER.SET_SELECTED_FLYER, payload: {}})
-      //redirect to manage
-      redirectCb("/manage");
+        //redirect to manage
+        redirectCb("/manage");
+
     } catch(error) {
       dispatch({type: constants.FLYER.SET_DELETING_FLYER_FAIL, payload: error.response.data.errors});
     }
   }
-  // if flyer is successfully deleted, setWishToDeleteFlyer should be false
 }
 
+export const setDeletedFlyer = (load:any) => {
+  return {
+    type: constants.FLYER.SET_DELETED_FLYER,
+    payload: load
+  };
+};
 
 // export const setNewFlyer = (newFlyer: any) => {
 //   return {
@@ -240,11 +246,5 @@ export const deleteFlyer = (flyer:any, redirectCb:any) => {
 //   };
 // };
 
-// export const setDeletedFlyer = (bool: boolean) => {
-//   return {
-//     type: constants.FLYER.SET_DELETED_FLYER,
-//     bool: bool
-//   };
-// };
 
 

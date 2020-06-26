@@ -12,7 +12,8 @@ export interface DeleteFlyerModalProps extends RouteComponentProps {
     modal: boolean,
     toggleModal: any,
     flyer: IFlyer,
-    deleteFlyer: any
+    deleteFlyer: any,
+    manageMode?: boolean
 }
  
 const DeleteFlyerModal: React.SFC<DeleteFlyerModalProps> = ({

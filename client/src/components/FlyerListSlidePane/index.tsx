@@ -23,7 +23,8 @@ export interface FlyerListSlidepaneProps {
     setFlyersInit: any,
     setWishToDeleteFlyer: any,
     setOpenFlyerPane: any,
-    children: any
+    children: any,
+    manageMode?: boolean
 }
  
 const FlyerListSlidepane: React.SFC<FlyerListSlidepaneProps> = ({
@@ -33,7 +34,8 @@ const FlyerListSlidepane: React.SFC<FlyerListSlidepaneProps> = ({
     setOpenFlyerPane,
     setWishToDeleteFlyer,
     flyer,
-    reduxLocation
+    reduxLocation,
+    manageMode
 }) => {
 
     return ( 
@@ -45,7 +47,9 @@ const FlyerListSlidepane: React.SFC<FlyerListSlidepaneProps> = ({
                 title={`${((reduxLocation||{}).selectedPlace||{}).name||""}`}
                 shouldCloseOnEsc
                 onRequestClose={() => {
-                    setFlyersInit([]);
+                    if(!manageMode) {
+                        setFlyersInit([]);
+                    }
                     setOpenFlyerPane(false);
                     setSelectedPlace(null);
                 }}

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom'
 
-import {setIpLocation ,setSelectedPlace ,setFlyersInit, setOpenFlyerPane} from '../../redux/actions'
+import {setIpLocation ,setSelectedPlace ,setFlyersInit, setOpenFlyerPane, setSelectedFlyer} from '../../redux/actions'
 import { StoreState} from '../../redux/root-reducer';
 import user, { IUser } from "../../redux/reducers/user";
 import { IFlyer } from "../../redux/reducers/flyer";
@@ -21,6 +21,7 @@ import {getWindowWidth} from '../../utils/functions';
 export interface HomeProps extends RouteComponentProps {
   setIpLocation: any,
   setSelectedPlace: any,
+  setSelectedFlyer: any,
   setFlyersInit: any,
   setOpenFlyerPane: any,
   reduxLocation: ILocation,
@@ -34,6 +35,14 @@ const Home: React.SFC<HomeProps> = (props) => {
   const [gettingLocation, setGettingLocation] = useState(false)
   //const [isPaneOpenLeft, setIsPaneOpenLeft] = useState(false);
 
+  useEffect(()=> {
+    props.setSelectedFlyer({});
+    //clean up work
+    return () => {
+      setFlyersInit([])
+    }
+
+  },[])
   useEffect(()=> {
     if(showMap===true) {
       setGettingLocation(true);
@@ -123,5 +132,6 @@ export default connect(mapStateToProps, {
   setIpLocation,
   setSelectedPlace,
   setFlyersInit,
-  setOpenFlyerPane
+  setOpenFlyerPane,
+  setSelectedFlyer
 })(Home);
