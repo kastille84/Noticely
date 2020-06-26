@@ -15,6 +15,7 @@ import {
   NavbarText,
   Button
 } from 'reactstrap';
+import {Link} from 'react-router-dom';
 
 import SignIn from '../SignIn';
 import Register from '../Register';
@@ -52,11 +53,11 @@ const Navigation: React.SFC<NavigationProps> = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
               <NavItem>
-                <NavLink href="/">Home</NavLink>
+                <NavLink tag={Link} to="/">Home</NavLink>
               </NavItem>
             {isLoggedIn() &&
               <NavItem>
-                <NavLink href="/manage">Manage</NavLink>
+                <NavLink tag={Link} to="/manage">Manage</NavLink>
               </NavItem>            
             }
           </Nav>

@@ -105,6 +105,17 @@ module.exports = {
             console.log("error", error);
         }
     },
+    getFlyersByUser: async(args, req) => {
+        try {
+            const flyerResponse = await Flyer.find({user: args.userId}).populate("placeId").populate("user");
+            if(!flyerResponse) {
+                return [];
+            }
+            return flyerResponse;
+        } catch(error) {
+            console.log("error", error)
+        }
+    },
     deleteFlyer: async(args, req) => {
         try {
             const flyerResponse = await Flyer.findByIdAndRemove(args.flyerId).populate("user");

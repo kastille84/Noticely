@@ -13,6 +13,7 @@ module.exports = buildSchema(`
     password: String
     token: String
   }
+
   type S3 {
     signedRequest: String!
     url: String!
@@ -38,9 +39,9 @@ module.exports = buildSchema(`
     createdAt: String!
     updatedAt: String!
   }
-  type FlyerByPlace {
+  type FlyerByUser {
     _id: ID!
-    placeId: String! 
+    placeId: Place
     user: User
     name: String!
     heading: String! 
@@ -50,6 +51,7 @@ module.exports = buildSchema(`
     createdAt: String!
     updatedAt: String!
   }
+ 
   type Place {
     _id: ID!
     place_id: String!
@@ -104,6 +106,7 @@ module.exports = buildSchema(`
     signS3(s3Input: S3Input!): S3!
     getPlaces: [Place]!
     getFlyersByPlace(flyersByPlaceInput:FlyersByPlaceInput!): [Flyer]!
+    getFlyersByUser(userId: ID!): [FlyerByUser]!
   }
 
   type RootMutation {

@@ -125,6 +125,47 @@ export const getFlyersByPlace = (place_id: String) => {
   }
 };
 
+export const getFlyersByUser = (userId: String) => {
+  return async (dispatch: Dispatch) => {
+    dispatch({type: constants.FLYER.SET_FLYERS});
+    try {
+      const response = await axios.post("graphql", JSON.stringify({
+        query: `
+          query {
+            getFlyersByUser(userId: "${userId}") {
+              _id
+              placeId {
+                _id
+                place_id
+                name
+                formattedAddress
+              }
+              user {
+                _id
+                name
+                email
+              }
+              heading
+              description
+              images
+              contact {
+                phone
+                email
+              }
+              createdAt
+              updatedAt
+            }
+          }
+        `
+      }))
+      const {data:{data:{getFlyersByUser}}} = response;
+      dispatch({type: constants.FLYER.SET_FLYERS_SUCCESS, payload: getFlyersByUser});
+    } catch(error) {
+      dispatch({type: constants.FLYER.SET_FLYERS_FAIL, payload: error.response.data.errors});
+    }
+  }
+};
+
 export const setSelectedFlyer = (flyer: any) => {
   return {
     type: constants.FLYER.SET_SELECTED_FLYER,

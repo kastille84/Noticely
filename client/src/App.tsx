@@ -36,17 +36,17 @@ const App:React.SFC<AppProps> = ({getUserInfo}) => {
   return (
     <div className="App">
         {/* Navigation goes here */}
-      <Navigation />
-      <div className="container mt-4 mb-4">
         <Router>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/make-flyer" component={MakeFlyer} />
-            <Route exact path="/view-flyer" component={ViewFlyer} />
-            <Route exact path="/manage" component={Manage} />
-          </Switch>
+          <Navigation />
+          <div className="container mt-4 mb-4">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/make-flyer" component={MakeFlyer} />
+                <Route exact path="/view-flyer" component={ViewFlyer} />
+                <Route exact path="/manage" component={Manage} />
+              </Switch>
+          </div>
         </Router>
-      </div>
       {/* Footer goes here */}
     </div>
   );
