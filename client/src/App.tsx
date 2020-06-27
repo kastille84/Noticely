@@ -16,6 +16,7 @@ import Home from './containers/Home/index';
 import MakeFlyer from './containers/MakeFlyer/index';
 import ViewFlyer from './containers/ViewFlyer';
 import Manage from './containers/Manage';
+import EditFlyer from './containers/EditFlyer';
 
 import {StoreState} from './redux/root-reducer';
 
@@ -44,6 +45,7 @@ const App:React.SFC<AppProps> = ({getUserInfo}) => {
                 <Route exact path="/make-flyer" component={MakeFlyer} />
                 <Route exact path="/view-flyer" component={ViewFlyer} />
                 <Route exact path="/manage" component={Manage} />
+                <Route exact path="/edit-flyer" component={EditFlyer} />
               </Switch>
           </div>
         </Router>

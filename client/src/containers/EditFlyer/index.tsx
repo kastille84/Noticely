@@ -2,7 +2,6 @@ import React, {useState, useEffect, FormEvent} from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {Label, Input, Button, Spinner} from 'reactstrap';
-import {uuid} from 'uuidv4';
 
 import { FormWrapper, InputGroup, CheckBoxContainer } from "../../components/Form/styled";
 import agent from '../../agent';
@@ -14,15 +13,14 @@ import { IUser } from '../../redux/reducers/user';
 import {validateImage, validateEmail} from '../../utils/validate';
 
 
-import {makeFlyer, setOpenFlyerPane} from '../../redux/actions';
+import {makeFlyer} from '../../redux/actions';
 import { RouteComponentProps } from 'react-router';
 
 export interface MakeFlyerProps extends RouteComponentProps {
     reduxLocation: ILocation,
     flyer: IFlyer,
     user: IUser,
-    makeFlyer: any,
-    setOpenFlyerPane: any
+    makeFlyer: any
 }
 
 const MakeFlyer:React.SFC<MakeFlyerProps> = ({
@@ -30,22 +28,21 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
     flyer,
     user,
     makeFlyer,
-    setOpenFlyerPane,
     history
 }) => {
     // useState
-    const [heading, setHeading] = useState("");
+    const [heading, setHeading] = useState(flyer.selectedFlyer.heading);
     // img 
-    const [imgNum, setImgNum] = useState(0);
-    const [img1, setImg1] = useState("");
-    const [img2, setImg2] = useState("");
-    const [description, setDescription] = useState("");
+    const [imgNum, setImgNum] = useState(flyer.selectedFlyer.images.length);
+    const [img1, setImg1] = useState(flyer.selectedFlyer.images[0]?flyer.selectedFlyer.images[0]:"");
+    const [img2, setImg2] = useState(flyer.selectedFlyer.images[1]?flyer.selectedFlyer.images[1]:"");
+    const [description, setDescription] = useState(flyer.selectedFlyer.description);
     // email
-    const [email, setEmail] = useState("")
-    const [selectedEmail, setSelectedEmail] = useState("");
+    const [email, setEmail] = useState(flyer.selectedFlyer.contact.email? flyer.selectedFlyer.contact.email:"")
+    const [selectedEmail, setSelectedEmail] = useState(flyer.selectedFlyer.contact.email? "email":"");
     // phone
-    const [phoneSelected, setPhoneSelected] = useState("");
-    const [phone, setPhone] = useState("");
+    const [phone, setPhone] = useState(flyer.selectedFlyer.contact.phone? flyer.selectedFlyer.contact.phone:"");
+    const [phoneSelected, setPhoneSelected] = useState(flyer.selectedFlyer.contact.phone? "phone":"");
     // errors
     const [errors, setErrors] = useState({
         heading: "",
@@ -203,6 +200,16 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
         makeFlyer(flyerBody);
     }
 
+    const handleDeletePic = (img: string, index:number) => {
+      if(index===1) {
+        setImg1("")
+      } else if (index === 2) {
+        setImg2("")        
+      }
+      let newImgNum = imgNum -1;
+      setImgNum(newImgNum);
+    }
+
     const renderErrors = () => {
         if(flyer.errors) {
           return flyer.errors.map((error:any) => {
@@ -215,21 +222,18 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
         if(!reduxLocation.selectedPlace) {
             history.push("/")
         }
-        return ()=> {
-            setOpenFlyerPane(false);
-        }
     },[])
-    useEffect(()=> {
-        //redirect to View Flyer once flyer is made
-        if(flyer.selectedFlyer && Object.keys(flyer.selectedFlyer).length>0) {
-            history.push("/view-flyer");
-        }
+    // useEffect(()=> {
+    //     //redirect to View Flyer once flyer is made
+    //     if(flyer.selectedFlyer && Object.keys(flyer.selectedFlyer).length>0) {
+    //         history.push("/view-flyer");
+    //     }
 
-    }, [flyer])
+    // }, [flyer])
 
     return (
         <div>
-            <h2>Make Your Flyer</h2>
+            <h2>Edit Your Flyer</h2>
             <h5>at {(reduxLocation.selectedPlace||{}).name}</h5>
             <FormWrapper>
                 {renderErrors()}
@@ -240,6 +244,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         <Input 
                             type="text" 
                             name="heading" 
+                            value={heading}
                             onChange={(e)=>setHeading(e.target.value)}
                             required
                         />
@@ -247,6 +252,28 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                     {isUserLoggedIn() &&(
                         <React.Fragment>
                             <p>Num of Pics Uploaded: {imgNum}/2</p>
+                            <div className="edit-pics">
+                              {img1 !=="" && (
+                                <div className="edit-pics__item">
+                                  <p className="edit-pics__item__controls">
+                                    <span onClick={()=>handleDeletePic(img1, 1)}>X</span>
+                                  </p>
+                                  <figure>
+                                      <img src={img1} />
+                                  </figure>                                        
+                              </div>
+                              )}
+                              {img2 !== "" && (
+                                <div className="edit-pics__item">
+                                  <p className="edit-pics__item__controls">
+                                    <span onClick={()=>handleDeletePic(img2, 2)}>X</span>
+                                  </p>
+                                  <figure>
+                                      <img src={img2} />
+                                  </figure>                                        
+                              </div>
+                              )}
+                            </div>
                             <InputGroup>
                                 {errors.imgNum && <p className="text-danger">{errors.imgNum}</p>}
                                 <Label for="img">Upload Image</Label>
@@ -268,6 +295,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                             type="textarea" 
                             name="description" 
                             rows="7"
+                            value={description}
                             onChange={(e)=>setDescription(e.target.value)}
                             required
                         />
@@ -281,6 +309,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                             <Input 
                                                 type="checkbox" 
                                                 value="email" 
+                                                checked={selectedEmail? true:false}
                                                 onChange={(e)=>setSelectedEmail(selectedEmail==""?e.target.value:"")}
                                             />{" "}Email {"|"}
                                         </div>
@@ -288,6 +317,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                             <Input 
                                                 type="checkbox" 
                                                 value="addPhone" 
+                                                checked={phoneSelected? true:false}
                                                 onChange={(e)=>setPhoneSelected(phoneSelected==""?e.target.value:"")}
                                             />{" "} Phone
                                         </div>
@@ -301,6 +331,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                     <Input 
                                         type="email" 
                                         name="email"
+                                        value={email}
                                         onChange={(e)=>setEmail(e.target.value)}
                                     />                            
                                 </InputGroup>
@@ -312,6 +343,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                     <Input 
                                         type="tel" 
                                         name="phone"
+                                        value={phone}
                                         onChange={(e)=>setPhone(e.target.value)}
                                     />                            
                                 </InputGroup>                            
@@ -333,7 +365,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         {flyer.makingFlyer?
                             <Spinner color="light"></Spinner>
                         :
-                        "Make Flyer"
+                        "Edit Flyer"
                         }
                     </Button>
                 </form>
@@ -349,6 +381,5 @@ const mapStateToProps = (state: StoreState) => ({
   });
 
 export default connect(mapStateToProps, {
-    makeFlyer,
-    setOpenFlyerPane
+    makeFlyer
 })(MakeFlyer);
