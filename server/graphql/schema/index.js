@@ -79,6 +79,17 @@ module.exports = buildSchema(`
     images: [String]!
     contact: Contact!
   }
+  input EditFlyerInput {
+    _id: ID!
+    placeId: String! 
+    formattedAddress: String! 
+    latlng: LatLng!
+    name: String!
+    heading: String! 
+    description: String!
+    images: [String]!
+    contact: Contact!
+  }
 
   input UserInput {
     name: String!
@@ -112,6 +123,7 @@ module.exports = buildSchema(`
   type RootMutation {
     registerUser(userInput:UserInput!):User! 
     makeFlyer(flyerInput:FlyerInput!): Flyer!
+    editFlyer(editFlyerInput:EditFlyerInput!): Flyer!
     deleteFlyer(flyerId: ID!): Flyer!
   }
 

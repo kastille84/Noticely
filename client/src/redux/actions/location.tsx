@@ -17,6 +17,12 @@ export interface ISetSelectedPlace {
     payload?: any
 }
 
+export const setInitialMapShow = () => {
+    return {
+        type: constants.LOCATION.INITIAL_MAP_SHOW
+    }
+}
+
 export const setIpLocation = (ipLocation:{lat:number, lng:number}) => {
     return {
         type: constants.LOCATION.SET_IP_LOCATION,

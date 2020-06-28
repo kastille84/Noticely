@@ -5,6 +5,7 @@ export interface IFlyer {
     openFlyerPane: boolean,
     flyerMade: boolean,
     makingFlyer: boolean,
+    editingFlyer: boolean,
     fetchingFlyers: boolean,
     flyers: any[],
     selectedFlyer: any,
@@ -17,6 +18,7 @@ const initialState = {
     openFlyerPane:  false,
     flyerMade: false,
     makingFlyer: false,
+    editingFlyer: false,
     fetchingFlyers: false,
     flyers: [],
     selectedFlyer: {},
@@ -68,6 +70,26 @@ export default (state:IFlyer=initialState, action:Action) => {
         return {
             ...state,
             makingFlyer: false,
+            flyerMade: false,
+            errors: action.payload
+        }
+    case constants.FLYER.SET_EDITING_FLYER:
+        return {
+            ...state,
+            editingFlyer: true
+        }
+    case constants.FLYER.SET_EDITING_FLYER_SUCCESS:
+        return {
+            ...state,
+            editingFlyer: false,
+            flyerMade: true,
+            selectedFlyer: action.payload,
+            errors: null
+        }
+    case constants.FLYER.SET_EDITING_FLYER_FAIL:
+        return {
+            ...state,
+            editingFlyer: false,
             flyerMade: false,
             errors: action.payload
         }

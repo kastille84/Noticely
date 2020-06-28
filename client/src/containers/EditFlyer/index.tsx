@@ -13,36 +13,40 @@ import { IUser } from '../../redux/reducers/user';
 import {validateImage, validateEmail} from '../../utils/validate';
 
 
-import {makeFlyer} from '../../redux/actions';
+import {editFlyer, setOpenFlyerPane} from '../../redux/actions';
 import { RouteComponentProps } from 'react-router';
+import { IsEmptyObj } from '../../utils/functions';
+import { EditFlyerStyle } from './styled';
 
-export interface MakeFlyerProps extends RouteComponentProps {
+export interface EditFlyerProps extends RouteComponentProps {
     reduxLocation: ILocation,
     flyer: IFlyer,
     user: IUser,
-    makeFlyer: any
+    editFlyer: any,
+    setOpenFlyerPane: any
 }
 
-const MakeFlyer:React.SFC<MakeFlyerProps> = ({
+const EditFlyer:React.SFC<EditFlyerProps> = ({
     reduxLocation,
     flyer,
     user,
-    makeFlyer,
-    history
+    editFlyer,
+    history,
+    setOpenFlyerPane
 }) => {
     // useState
-    const [heading, setHeading] = useState(flyer.selectedFlyer.heading);
+    const [heading, setHeading] = useState(((flyer.selectedFlyer||{}).heading)||"");
     // img 
-    const [imgNum, setImgNum] = useState(flyer.selectedFlyer.images.length);
-    const [img1, setImg1] = useState(flyer.selectedFlyer.images[0]?flyer.selectedFlyer.images[0]:"");
-    const [img2, setImg2] = useState(flyer.selectedFlyer.images[1]?flyer.selectedFlyer.images[1]:"");
-    const [description, setDescription] = useState(flyer.selectedFlyer.description);
+    const [imgNum, setImgNum] = useState(((flyer.selectedFlyer||{}).images||[]).length);
+    const [img1, setImg1] = useState(((flyer.selectedFlyer||{}).images || []).length > 0 ?flyer.selectedFlyer.images[0]:"");
+    const [img2, setImg2] = useState(((flyer.selectedFlyer||{}).images || []).length > 1 ?flyer.selectedFlyer.images[1]:"");
+    const [description, setDescription] = useState(((flyer.selectedFlyer||{}).description)||"");
     // email
-    const [email, setEmail] = useState(flyer.selectedFlyer.contact.email? flyer.selectedFlyer.contact.email:"")
-    const [selectedEmail, setSelectedEmail] = useState(flyer.selectedFlyer.contact.email? "email":"");
+    const [email, setEmail] = useState(((flyer.selectedFlyer||{}).contact||{}).email? flyer.selectedFlyer.contact.email:"")
+    const [selectedEmail, setSelectedEmail] = useState(((flyer.selectedFlyer||{}).contact||{}).email? "email":"");
     // phone
-    const [phone, setPhone] = useState(flyer.selectedFlyer.contact.phone? flyer.selectedFlyer.contact.phone:"");
-    const [phoneSelected, setPhoneSelected] = useState(flyer.selectedFlyer.contact.phone? "phone":"");
+    const [phone, setPhone] = useState(((flyer.selectedFlyer||{}).contact||{}).phone? flyer.selectedFlyer.contact.phone:"");
+    const [phoneSelected, setPhoneSelected] = useState(((flyer.selectedFlyer||{}).contact||{}).phone? "phone":"");
     // errors
     const [errors, setErrors] = useState({
         heading: "",
@@ -185,6 +189,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
             images.push(img2)
         }
         const flyerBody = {
+            _id: flyer.selectedFlyer._id,
             placeId: reduxLocation.selectedPlace.placeId,
             formattedAddress: reduxLocation.selectedPlace.formatted_address,
             latlng: reduxLocation.selectedPlace.latlng,
@@ -197,12 +202,13 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
         }
 
         // async action to make API call to make-flyer
-        makeFlyer(flyerBody);
+        editFlyer(flyerBody, ()=>history.push("/view-flyer"));
     }
 
     const handleDeletePic = (img: string, index:number) => {
       if(index===1) {
-        setImg1("")
+        setImg1(img2)
+        setImg2("")
       } else if (index === 2) {
         setImg2("")        
       }
@@ -219,22 +225,19 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
     }
 
     useEffect(()=> {
-        if(!reduxLocation.selectedPlace) {
+        if(IsEmptyObj(flyer.selectedFlyer)) {
             history.push("/")
         }
+
+        return () => {
+            setOpenFlyerPane(false)
+        }
     },[])
-    // useEffect(()=> {
-    //     //redirect to View Flyer once flyer is made
-    //     if(flyer.selectedFlyer && Object.keys(flyer.selectedFlyer).length>0) {
-    //         history.push("/view-flyer");
-    //     }
 
-    // }, [flyer])
-
-    return (
-        <div>
+    return !flyer.selectedFlyer? null : (            
+        <EditFlyerStyle>
             <h2>Edit Your Flyer</h2>
-            <h5>at {(reduxLocation.selectedPlace||{}).name}</h5>
+            <h5>{(reduxLocation.selectedPlace||{}).name}</h5>
             <FormWrapper>
                 {renderErrors()}
                 <form onSubmit={handleSubmit}>
@@ -253,26 +256,26 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         <React.Fragment>
                             <p>Num of Pics Uploaded: {imgNum}/2</p>
                             <div className="edit-pics">
-                              {img1 !=="" && (
+                                {img1 !=="" && (
                                 <div className="edit-pics__item">
-                                  <p className="edit-pics__item__controls">
+                                    <p className="edit-pics__item__controls">
                                     <span onClick={()=>handleDeletePic(img1, 1)}>X</span>
-                                  </p>
-                                  <figure>
-                                      <img src={img1} />
-                                  </figure>                                        
-                              </div>
-                              )}
-                              {img2 !== "" && (
+                                    </p>
+                                    <figure>
+                                        <img src={img1} />
+                                    </figure>                                        
+                                </div>
+                                )}
+                                {img2 !== "" && (
                                 <div className="edit-pics__item">
-                                  <p className="edit-pics__item__controls">
+                                    <p className="edit-pics__item__controls">
                                     <span onClick={()=>handleDeletePic(img2, 2)}>X</span>
-                                  </p>
-                                  <figure>
-                                      <img src={img2} />
-                                  </figure>                                        
-                              </div>
-                              )}
+                                    </p>
+                                    <figure>
+                                        <img src={img2} />
+                                    </figure>                                        
+                                </div>
+                                )}
                             </div>
                             <InputGroup>
                                 {errors.imgNum && <p className="text-danger">{errors.imgNum}</p>}
@@ -360,9 +363,9 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         type="submit"
                         color='primary'
                         outline={false}
-                        disabled={flyer.makingFlyer? true:false}
+                        disabled={flyer.editingFlyer? true:false}
                     >
-                        {flyer.makingFlyer?
+                        {flyer.editingFlyer?
                             <Spinner color="light"></Spinner>
                         :
                         "Edit Flyer"
@@ -370,9 +373,8 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                     </Button>
                 </form>
             </FormWrapper>
-        </div>
-    )
-}
+        </EditFlyerStyle>
+    )}
 
 const mapStateToProps = (state: StoreState) => ({
     reduxLocation: state.location,
@@ -381,5 +383,6 @@ const mapStateToProps = (state: StoreState) => ({
   });
 
 export default connect(mapStateToProps, {
-    makeFlyer
-})(MakeFlyer);
+    editFlyer,
+    setOpenFlyerPane
+})(EditFlyer);

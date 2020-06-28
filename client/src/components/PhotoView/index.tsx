@@ -15,7 +15,7 @@ const PhotoView: React.SFC<PhotoViewProps> = ({images}) => {
             <div className="photo-view__images">
                 {images.map((img, idx) => (
                     <figure key={idx} onClick={()=>setSelectedImage(img)}>
-                        <img src={img} />
+                        <img src={img} className="img-fluid" />
                     </figure>
                 ))}
             </div>

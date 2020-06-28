@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 import axios from "axios";
 
 export interface IFlyerData {
+  _id?:string,
   placeId: string;
   formattedAddress: string;
   name: string;
@@ -69,6 +70,64 @@ export const makeFlyer = (flyer: IFlyerData) => {
     } catch(error) {
         dispatch<IFlyerAction>({
             type: constants.FLYER.SET_MAKING_FLYER_FAIL,
+            payload: error.response.data.errors
+        })
+    }
+  };
+};
+
+export const editFlyer = (flyer: IFlyerData ,redirectCb:any) => {
+  return async (dispatch: Dispatch) => {
+    dispatch<IFlyerAction>({
+      type: constants.FLYER.SET_EDITING_FLYER,
+      payload: true
+    });
+    try {
+        const response = await axios.post(
+                "/graphql",
+                JSON.stringify({
+                    query: `
+                        mutation {
+                            editFlyer(editFlyerInput: {
+                                _id: "${flyer._id}",
+                                placeId: "${flyer.placeId}", formattedAddress: "${flyer.formattedAddress}" , 
+                                latlng: {lat:"${flyer.latlng.lat}", lng: "${flyer.latlng.lng}"},
+                                name: "${flyer.name}", heading: "${flyer.heading}", 
+                                description: """${flyer.description}""", images: "${flyer.images}",
+                                contact: {phone:"${flyer.phone}", email: "${flyer.email}"}
+                            }) {
+                                _id
+                                placeId
+                                user {
+                                  _id
+                                  name
+                                  email
+                                }
+                                images
+                                heading
+                                description
+                                contact {
+                                  phone
+                                  email
+                                }
+                                createdAt
+                                updatedAt
+                            }
+                        } 
+                    `
+                })
+            );
+            const {data:{data:{editFlyer}}} = response;
+            dispatch<IFlyerAction>({
+              type: constants.FLYER.SET_EDITING_FLYER_SUCCESS,
+              payload: editFlyer
+            });
+            //redirect to view-flyer page
+            redirectCb();
+    } catch(error) {
+        console.dir("error", error);
+        dispatch<IFlyerAction>({
+            type: constants.FLYER.SET_EDITING_FLYER_FAIL,
             payload: error.response.data.errors
         })
     }

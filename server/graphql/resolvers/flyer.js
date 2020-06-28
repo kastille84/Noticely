@@ -90,6 +90,69 @@ module.exports = {
             console.dir(error)
         }
     },
+    editFlyer: async (args, req) => {
+        // pull out user from req or else it's anonymous user
+        const jwtObj= req.headers.authorization.length > 11? jwt.decode(req.headers.authorization.slice(7)): {};
+        try {            
+            const flyerResponse = await Flyer.findById(args.editFlyerInput._id);
+
+            // check and delete old images
+            const s3 = new aws.S3();
+            const newImagesAsArray = args.editFlyerInput.images[0].split(",");
+
+            if(flyerResponse.images.length > 0) {
+                // image 1
+                if(!newImagesAsArray.includes(flyerResponse.images[0])) {
+                    // this images must be deleted from S3
+                    let paramS3 = {
+                        Bucket: S3_BUCKET,
+                        Delete: {
+                            Objects: [{
+                                    Key: flyerResponse.images[0].slice(34, flyerResponse.images[0].length)
+                            }]
+                        }
+                    }
+                    await s3.deleteObjects(paramS3, function(err, data){
+                        if(err){"errS3",console.log(err)}
+                        else console.log(data)
+                    })
+                }
+                // image 2
+                if(flyerResponse.images[1]) {
+                    if(!newImagesAsArray.includes(flyerResponse.images[1])) {
+                        // this images must be deleted from S3
+                        let paramS3 = {
+                            Bucket: S3_BUCKET,
+                            Delete: {
+                                Objects: [{
+                                        Key: flyerResponse.images[1].slice(34, flyerResponse.images[1].length)
+                                }]
+                            }
+                        }
+                        await s3.deleteObjects(paramS3, function(err, data){
+                            if(err){"errS3",console.log(err)}
+                            else console.log(data)
+                        })
+                    }
+                }
+            }
+
+            // update and save
+            flyerResponse.heading =  args.editFlyerInput.heading;
+            flyerResponse.description = args.editFlyerInput.description;
+            flyerResponse.images = args.editFlyerInput.images[0].split(",");
+            flyerResponse.contact = {
+                    email: args.editFlyerInput.contact.email? args.editFlyerInput.contact.email: (jwtObj.email?jwtObj.email:""),
+                    phone: args.editFlyerInput.contact.phone? args.editFlyerInput.contact.phone: ""
+                };
+            const updatedFlyer = await flyerResponse.save();
+            
+            return updatedFlyer;
+
+        } catch(error) {
+            console.dir(error)
+        }
+    },
     getFlyersByPlace: async(args, req) => {
         try {
             const placeResponse = await Place.findOne({place_id: args.flyersByPlaceInput.place_id});

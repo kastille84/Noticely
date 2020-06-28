@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom'
 
-import {setIpLocation ,setSelectedPlace ,setFlyersInit, setOpenFlyerPane, setSelectedFlyer} from '../../redux/actions'
+import {setIpLocation ,setSelectedPlace ,setFlyersInit, setOpenFlyerPane, setSelectedFlyer , setInitialMapShow} from '../../redux/actions'
 import { StoreState} from '../../redux/root-reducer';
 import user, { IUser } from "../../redux/reducers/user";
 import { IFlyer } from "../../redux/reducers/flyer";
@@ -24,6 +24,7 @@ export interface HomeProps extends RouteComponentProps {
   setSelectedFlyer: any,
   setFlyersInit: any,
   setOpenFlyerPane: any,
+  setInitialMapShow: any,
   reduxLocation: ILocation,
   user: IUser,
   flyer: IFlyer
@@ -33,10 +34,12 @@ const Home: React.SFC<HomeProps> = (props) => {
   const [ipWasSet, setIpWasSet] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [gettingLocation, setGettingLocation] = useState(false)
-  //const [isPaneOpenLeft, setIsPaneOpenLeft] = useState(false);
 
   useEffect(()=> {
     props.setSelectedFlyer({});
+    if(props.reduxLocation.initialMapShow) {
+      setShowMap(true);
+    }
     //clean up work
     return () => {
       setFlyersInit([])
@@ -65,6 +68,7 @@ const Home: React.SFC<HomeProps> = (props) => {
 
   const showMapToggle = () => {
     setShowMap(!showMap)
+    props.setInitialMapShow();
 }
 
   return (  
@@ -133,5 +137,6 @@ export default connect(mapStateToProps, {
   setSelectedPlace,
   setFlyersInit,
   setOpenFlyerPane,
-  setSelectedFlyer
+  setSelectedFlyer,
+  setInitialMapShow
 })(Home);

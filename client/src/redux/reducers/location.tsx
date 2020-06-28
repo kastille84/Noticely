@@ -3,6 +3,7 @@ import constants from '../constants';
 
 export interface ILocation {
     ipLocation: {lat:number, lng:number}|null,
+    initialMapShow: boolean,
     validPlace: any|null,
     selectedPlace: any|null,
     allPlaces: any[],
@@ -14,6 +15,7 @@ const initialState = {
         lat:41.500710,
         lng: -74.021347
     },
+    initialMapShow: false,
     validPlace: null,
     selectedPlace: null,
     allPlaces: [],
@@ -28,6 +30,11 @@ export default (state:ILocation=initialState, action:Action) => {
             ...state,
             ipLocation: action.payload
         };
+    case constants.LOCATION.INITIAL_MAP_SHOW:
+        return {
+            ...state,
+            initialMapShow: true
+        }
     case constants.LOCATION.SET_VALID_PLACE:
         return {
             ...state,

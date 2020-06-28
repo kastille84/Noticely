@@ -275,14 +275,15 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                     {isUserLoggedIn()? (
                         <React.Fragment>
                             <InputGroup>
-                                <Label for="img">Ways to Contact You</Label>
+                                <Label for="img">Contact Information</Label>
+                                    <small>Deselect "Email" to use registered email</small>
                                     <CheckBoxContainer>
                                         <div className="CheckBoxItem">
                                             <Input 
                                                 type="checkbox" 
                                                 value="email" 
                                                 onChange={(e)=>setSelectedEmail(selectedEmail==""?e.target.value:"")}
-                                            />{" "}Email {"|"}
+                                            />{" "}Email 
                                         </div>
                                         <div className="CheckBoxItem">
                                             <Input 
