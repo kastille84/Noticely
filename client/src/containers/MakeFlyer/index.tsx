@@ -142,7 +142,6 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        console.log("here")
         //reset error 'max of 2 images'
         setErrors({...errors, imgNum:""})
         e.preventDefault()
@@ -157,24 +156,12 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
         errorsObj.email = selectedEmail && validateEmail(email)==="Not a Valid Email" && "Email is invalid";
 
         setErrors(errorsObj);
-        console.log(errorsObj)
         // check if any errors exist, don't submit form if errors
         for (let errorItem in errorsObj) {
-            // if (!errorsObj[errorItem]) {
-            //     console.log(errorItem, errorsObj[errorItem])
-            //     console.log('reached here');
-            // return;
-            // }
             if(typeof errorsObj[errorItem] === "boolean" && errorsObj[errorItem] === true) {
-                console.log("false")
-                console.log(errorItem, errorsObj[errorItem])
-                console.log('reached here');
                 return;
             }
             if(typeof errorsObj[errorItem] === "string" && errorsObj[errorItem].length >0) {
-                console.log("empty")
-                console.log(errorItem, errorsObj[errorItem])
-                console.log('reached here');
                 return;
             }
         }

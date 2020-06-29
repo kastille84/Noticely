@@ -1,10 +1,6 @@
 const {buildSchema} = require("graphql");
 
 module.exports = buildSchema(`
-  type Dummy {
-    _id: ID!
-    text: String!
-  }
 
   type User {
     _id: ID!
@@ -111,7 +107,6 @@ module.exports = buildSchema(`
   }
   
   type RootQuery {
-    dummies: [Dummy!]!
     getUserInfo: User!
     loginUser(loginInput:LoginInput!):User!
     signS3(s3Input: S3Input!): S3!

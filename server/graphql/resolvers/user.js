@@ -55,10 +55,8 @@ module.exports = {
     }
   },
   loginUser: async(args) => {
-    console.log("args", args)
     try {      
       const user = await User.findOne({email: args.loginInput.email});
-      console.log("user", user)
       if(!user) {
         throw new Error("This email does not exist in our records.")
       }

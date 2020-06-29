@@ -9,7 +9,7 @@ const Wrapper = styled.section`
         &__item {
             width: 125px;
             height: auto;
-            margin-right: 5px;
+            margin-right: 15px;
             border: 1px solid #ccc;
 
             &__controls {

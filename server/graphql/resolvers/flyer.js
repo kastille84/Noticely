@@ -37,7 +37,6 @@ module.exports = {
                 url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
             }
         } catch(error) {
-            console.log(error);
             throw error;
         }
     },
@@ -56,9 +55,6 @@ module.exports = {
                 });
                 locationExists = await newLocation.save();
             } 
-            console.log("locationExists", locationExists)
-            console.log("typeof args.flyerInput.images",typeof args.flyerInput.images )
-            console.log("args.flyerInput.images",args.flyerInput.images )
             //set flyer
             const newFlyer = new Flyer({
                 user: jwtObj._id? jwtObj._id: null,
@@ -75,15 +71,12 @@ module.exports = {
             await Flyer.populate(flyer, "user" ,(err, popFlyer) => {
                 flyer=popFlyer;
             })
-            console.log('MakeFlyer', flyer)
-            console.log('MakeFlyer', flyer)
             // save flyerId into user's flyer array ,if user is not anonymous
             if(Object.keys(jwtObj).length > 0) {
                 const user = await User.findById(flyer.user);
                 user.flyers = [...user.flyers, flyer._id];
                 await user.save();
             }
-            console.log('flyer', flyer)
             return flyer;
 
         } catch(error) {
@@ -156,12 +149,10 @@ module.exports = {
     getFlyersByPlace: async(args, req) => {
         try {
             const placeResponse = await Place.findOne({place_id: args.flyersByPlaceInput.place_id});
-            console.log('response', placeResponse)
             if(!placeResponse) {
                 return [];
             }
             const flyerResponse = await Flyer.find({placeId: placeResponse._id}).populate("user");
-            console.log("flyerResponse", flyerResponse);
             return flyerResponse;
 
         } catch(error) {
@@ -190,7 +181,6 @@ module.exports = {
                         Key: img.slice(34, img.length)
                     })
                 }
-                console.log('imagesToDelete', imagesToDelete);
                 let paramS3 = {
                     Bucket: S3_BUCKET,
                     Delete: {
@@ -205,22 +195,16 @@ module.exports = {
             }
             // find the user
             const userResponse = await User.findById(flyerResponse.user._id);
-            console.log('1 userResponse', userResponse)
             let newUserFlyersArr = [...userResponse.flyers].filter(flyerObjId => flyerObjId.toString() !==args.flyerId)
-            console.log("2 newUserFlyersArr", newUserFlyersArr);
             // update/remove flyer from user's flyers property
             const userUpdateResponse = await User.findByIdAndUpdate(userResponse._id, {flyers: newUserFlyersArr});
-            console.log("3 userUPdateResponse", userUpdateResponse)
             // use all other flyer to see if they have flyerResponse's placeId
             const allFlyersResponse = await Flyer.find({placeId: flyerResponse.placeId});
-            console.log("4 allFlyersResponse", allFlyersResponse);
             // If you get results, do nothing
             // If it comes out empty, it means no other flyer is at that place. Delete that place.
             if (!allFlyersResponse.length) {
                 const placeResponse = await Place.findOneAndRemove({_id:flyerResponse.placeId});
-                console.log("5 placeResponse", placeResponse)
             }
-            console.log("6 flyerResponse", flyerResponse)
             return flyerResponse;
 
         } catch(error) {

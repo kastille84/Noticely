@@ -47,7 +47,7 @@ const Navigation: React.SFC<NavigationProps> = (props) => {
   return ( 
     <StyledNavigation>
       <Navbar light expand="md">
-        <NavbarBrand href="/">Noticely</NavbarBrand>
+        <NavbarBrand tag={Link} to="/">Noticely</NavbarBrand>
         {/* <NavbarBrand href="/"><img src={require("../../Logo.png")} /></NavbarBrand> */}
         <NavbarToggler onClick={toggleCollapse} />
         <Collapse isOpen={isOpen} navbar>

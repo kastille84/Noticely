@@ -37,7 +37,6 @@ const Manage: React.SFC<ManageProps> = ({
         setFlyersInit([]);
         //if not signed it, redirect to home
         if(IsEmptyObj(user.currentUser)) {
-            console.log("isEmpty",IsEmptyObj(user.currentUser), "currentUser", user.currentUser )
             history.push("/");
             return;
         }
@@ -80,7 +79,6 @@ const Manage: React.SFC<ManageProps> = ({
             }
             arrayOfPlacesWithAssociatedFlyers.push(tempArr)
         }
-        console.log("arrayOfPlacesWithAssociatedFlyers",arrayOfPlacesWithAssociatedFlyers);
 
         return (
             <div className="manage-list">

@@ -80,6 +80,8 @@ const MapWithASearchBox = compose(
           });
           const nextMarkers = places.map(place => ({
             position: place.geometry.location,
+            name: place.name,
+            place_id: place.place_id
           }));
           const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
           console.log("markers", this.state.markers)
@@ -101,13 +103,11 @@ const MapWithASearchBox = compose(
       //   console.log("reaches here")
       //   this.setState({markers: [ ...this.props.location.allPlaces]})
       // }
-      console.log('reched before')
       if(prevProps.location.selectedPlace !==null &&
         !IsEmptyObj(prevProps.location.selectedPlace) && 
         this.props.location.selectedPlace===null) 
         {
         //force update
-        console.log('reached here')
         this.setState({state: this.state});
       }
     }
@@ -150,6 +150,7 @@ const MapWithASearchBox = compose(
 
     }
     )}
+
     {/* For other markers */}
     {props.location.allPlaces.map((otherMarker, index) => {
       let restructuredLatLng = {
@@ -210,7 +211,7 @@ const mapStateToProps = (state) => {
     return {
         location: state.location,
         //userRedux: state.userRedux,
-        flyerRedux: state.flyerRedux
+        flyerRedux: state.flyer
     }
 }
 

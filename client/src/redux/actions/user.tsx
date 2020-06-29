@@ -124,7 +124,6 @@ export const loginUser = (email: string, password: string) => {
       agent.setSession(loginUser.token);
 
     } catch(error) {
-      console.log("error",error.response)
       dispatch<ILoginUserActionFail>({
         type: constants.USER.LOGIN_USER_FAIL,
         payload: error.response.data.errors

@@ -1,4 +1,3 @@
-import {IAddDummyAction} from './dummy';
 
 //User Actions
 import {
@@ -21,7 +20,6 @@ import {
 } from './flyer';
 
 export type Action = 
-IAddDummyAction |
 IRegisterUserAction |
 IRegisterUserActionSuccess |
 IRegisterUserActionFail |

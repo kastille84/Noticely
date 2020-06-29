@@ -21,7 +21,6 @@ import EditFlyer from './containers/EditFlyer';
 import {StoreState} from './redux/root-reducer';
 
 export interface AppProps {
-  dummy: any,
   getUserInfo: Function
 }
 
@@ -55,7 +54,6 @@ const App:React.SFC<AppProps> = ({getUserInfo}) => {
 }
 
 const mapStateToProps = (state:StoreState) => ({
-  dummy: state.dummy
 });
 
 export default connect(mapStateToProps ,{
