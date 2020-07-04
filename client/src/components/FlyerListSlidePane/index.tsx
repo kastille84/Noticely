@@ -54,7 +54,9 @@ const FlyerListSlidepane: React.SFC<FlyerListSlidepaneProps> = ({
                         setFlyersInit([]);
                     }
                     setOpenFlyerPane(false);
-                    setSelectedPlace(null);
+                    if(!flyer.usingTemplate) {
+                        setSelectedPlace(null);
+                    }
                     setUsingTemplate(false);
                 }}
             >
