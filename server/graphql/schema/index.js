@@ -32,6 +32,7 @@ module.exports = buildSchema(`
     description: String!
     images: [String]!
     contact: ContactType
+    template: String
     createdAt: String!
     updatedAt: String!
   }
@@ -44,6 +45,7 @@ module.exports = buildSchema(`
     description: String!
     images: [String]!
     contact: ContactType
+    template: String
     createdAt: String!
     updatedAt: String!
   }
@@ -74,6 +76,7 @@ module.exports = buildSchema(`
     description: String!
     images: [String]!
     contact: Contact!
+    template: String
   }
   input EditFlyerInput {
     _id: ID!
@@ -85,6 +88,7 @@ module.exports = buildSchema(`
     description: String!
     images: [String]!
     contact: Contact!
+    template: String
   }
 
   input UserInput {

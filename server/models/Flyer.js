@@ -25,7 +25,8 @@ const schema = new Schema({
   },
   contact: {
     type: Object
-  }
+  },
+  template: String
 }, {timestamps: true})
 
 module.exports = mongoose.model('Flyer', schema)

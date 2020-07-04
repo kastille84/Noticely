@@ -16,6 +16,7 @@ export interface IFlyerData {
   description: string;
   phone: string;
   email: string;
+  template: string;
 }
 export interface IFlyerAction {
   type: string;
@@ -39,7 +40,8 @@ export const makeFlyer = (flyer: IFlyerData) => {
                                 latlng: {lat:"${flyer.latlng.lat}", lng: "${flyer.latlng.lng}"},
                                 name: "${flyer.name}", heading: "${flyer.heading}", 
                                 description: """${flyer.description}""", images: "${flyer.images}",
-                                contact: {phone:"${flyer.phone}", email: "${flyer.email}"}
+                                contact: {phone:"${flyer.phone}", email: "${flyer.email}"},
+                                template: "${flyer.template}"
                             }) {
                                 _id
                                 placeId
@@ -55,6 +57,7 @@ export const makeFlyer = (flyer: IFlyerData) => {
                                   phone
                                   email
                                 }
+                                template
                                 createdAt
                                 updatedAt
                             }
@@ -94,7 +97,8 @@ export const editFlyer = (flyer: IFlyerData ,redirectCb:any) => {
                                 latlng: {lat:"${flyer.latlng.lat}", lng: "${flyer.latlng.lng}"},
                                 name: "${flyer.name}", heading: "${flyer.heading}", 
                                 description: """${flyer.description}""", images: "${flyer.images}",
-                                contact: {phone:"${flyer.phone}", email: "${flyer.email}"}
+                                contact: {phone:"${flyer.phone}", email: "${flyer.email}"},
+                                template: "${flyer.template}"
                             }) {
                                 _id
                                 placeId
@@ -110,6 +114,7 @@ export const editFlyer = (flyer: IFlyerData ,redirectCb:any) => {
                                   phone
                                   email
                                 }
+                                template
                                 createdAt
                                 updatedAt
                             }
@@ -170,6 +175,7 @@ export const getFlyersByPlace = (place_id: String) => {
                 phone
                 email
               }
+              template
               createdAt
               updatedAt
             }
@@ -211,6 +217,7 @@ export const getFlyersByUser = (userId: String) => {
                 phone
                 email
               }
+              template
               createdAt
               updatedAt
             }
@@ -262,6 +269,7 @@ export const deleteFlyer = (flyer:any, redirectCb:any) => {
                 phone
                 email
               }
+              template
               createdAt
               updatedAt
             }
@@ -290,6 +298,13 @@ export const setDeletedFlyer = (load:any) => {
     payload: load
   };
 };
+
+export const setUsingTemplate = (bool: boolean) => {
+  return {
+    type: constants.FLYER.SET_USING_TEMPLATE,
+    payload: bool
+  }
+}
 
 // export const setNewFlyer = (newFlyer: any) => {
 //   return {

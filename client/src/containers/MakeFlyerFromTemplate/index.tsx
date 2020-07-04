@@ -19,7 +19,7 @@ import FlyerListByUserTemplate from '../../components/FlyerListByUserTemplate';
 import {makeFlyer, setOpenFlyerPane, setUsingTemplate} from '../../redux/actions';
 import { RouteComponentProps } from 'react-router';
 
-export interface MakeFlyerProps extends RouteComponentProps {
+export interface MakeFlyerFromTemplateProps extends RouteComponentProps {
     reduxLocation: ILocation,
     flyer: IFlyer,
     user: IUser,
@@ -28,7 +28,7 @@ export interface MakeFlyerProps extends RouteComponentProps {
     setUsingTemplate: any
 }
 
-const MakeFlyer:React.SFC<MakeFlyerProps> = ({
+const MakeFlyerFromTemplate:React.SFC<MakeFlyerFromTemplateProps> = ({
     reduxLocation,
     flyer,
     user,
@@ -38,19 +38,19 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
     history
 }) => {
     // useState
-    const [heading, setHeading] = useState("");
+    const [heading, setHeading] = useState(((flyer.selectedFlyer||{}).heading)||"");
     // img 
     const [imgNum, setImgNum] = useState(0);
     const [img1, setImg1] = useState("");
     const [img2, setImg2] = useState("");
-    const [description, setDescription] = useState("");
+    const [description, setDescription] = useState(((flyer.selectedFlyer||{}).description)||"");
     // email
-    const [email, setEmail] = useState("")
-    const [selectedEmail, setSelectedEmail] = useState("");
+    const [email, setEmail] = useState(((flyer.selectedFlyer||{}).contact||{}).email? flyer.selectedFlyer.contact.email:"")
+    const [selectedEmail, setSelectedEmail] = useState(((flyer.selectedFlyer||{}).contact||{}).email? "email":"");
     // phone
-    const [phoneSelected, setPhoneSelected] = useState("");
-    const [phone, setPhone] = useState("");
-    const [template, setTemplate] = useState("");
+    const [phone, setPhone] = useState(((flyer.selectedFlyer||{}).contact||{}).phone? flyer.selectedFlyer.contact.phone:"");
+    const [phoneSelected, setPhoneSelected] = useState(((flyer.selectedFlyer||{}).contact||{}).phone? "phone":"");
+    const [template, setTemplate] = useState("")
     // errors
     const [errors, setErrors] = useState({
         heading: "",
@@ -193,7 +193,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
         }
 
         // async action to make API call to make-flyer
-        makeFlyer(flyerBody);
+        makeFlyer(flyerBody, );
     }
 
     const renderErrors = () => {
@@ -211,6 +211,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
         }
         return ()=> {
             setOpenFlyerPane(false);
+            setUsingTemplate(false);
         }
     },[])
     useEffect(()=> {
@@ -225,21 +226,6 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
         <div>
             <h2>Make Your Flyer</h2>
             <h5>at {(reduxLocation.selectedPlace||{}).name}</h5>
-            {isUserLoggedIn() && (
-                <React.Fragment>
-                    <Button
-                        color="primary"
-                        onClick={()=>{
-                            setOpenFlyerPane(true)
-                            setUsingTemplate(true);
-                        }}
-                    >
-                        Use a saved template
-                    </Button>
-                    <span>{" "}or create a new flyer below</span>
-                </React.Fragment>
-            )
-            }
             <hr/>
             <FormWrapper>
                 {renderErrors()}
@@ -250,6 +236,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         <Input 
                             type="text" 
                             name="heading" 
+                            value={heading}
                             onChange={(e)=>setHeading(e.target.value)}
                             required
                         />
@@ -277,6 +264,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                         <Input 
                             type="textarea" 
                             name="description" 
+                            value={description}
                             rows="7"
                             onChange={(e)=>setDescription(e.target.value)}
                             required
@@ -292,6 +280,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                             <Input 
                                                 type="checkbox" 
                                                 value="email" 
+                                                checked={selectedEmail? true:false}
                                                 onChange={(e)=>setSelectedEmail(selectedEmail==""?e.target.value:"")}
                                             />{" "}Email 
                                         </div>
@@ -299,6 +288,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                             <Input 
                                                 type="checkbox" 
                                                 value="addPhone" 
+                                                checked={phoneSelected? true:false}
                                                 onChange={(e)=>setPhoneSelected(phoneSelected==""?e.target.value:"")}
                                             />{" "} Phone
                                         </div>
@@ -312,6 +302,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                     <Input 
                                         type="email" 
                                         name="email"
+                                        value={email}
                                         onChange={(e)=>setEmail(e.target.value)}
                                     />                            
                                 </InputGroup>
@@ -323,6 +314,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                     <Input 
                                         type="tel" 
                                         name="phone"
+                                        value={phone}
                                         onChange={(e)=>setPhone(e.target.value)}
                                     />                            
                                 </InputGroup>                            
@@ -341,6 +333,7 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                                 <Input 
                                     type="checkbox"
                                     value="template"
+                                    checked={template? true:false}
                                     onChange={(e)=>setTemplate(template==""?e.target.value:"")}
                                 />
                                 {" "}
@@ -362,12 +355,6 @@ const MakeFlyer:React.SFC<MakeFlyerProps> = ({
                     </Button>
                 </form>
             </FormWrapper>
-            {/* Slide Pane */}
-            {isUserLoggedIn() &&
-                <FlyerListSlidePane >
-                    <FlyerListByUserTemplate></FlyerListByUserTemplate>
-                </FlyerListSlidePane>            
-            }
         </div>
     )
 }
@@ -382,4 +369,4 @@ export default connect(mapStateToProps, {
     makeFlyer,
     setOpenFlyerPane,
     setUsingTemplate
-})(MakeFlyer);
+})(MakeFlyerFromTemplate);

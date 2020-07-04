@@ -19,6 +19,7 @@ import Manage from './containers/Manage';
 import EditFlyer from './containers/EditFlyer';
 
 import {StoreState} from './redux/root-reducer';
+import MakeFlyerFromTemplate from './containers/MakeFlyerFromTemplate';
 
 export interface AppProps {
   getUserInfo: Function
@@ -42,6 +43,7 @@ const App:React.SFC<AppProps> = ({getUserInfo}) => {
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/make-flyer" component={MakeFlyer} />
+                <Route exact path="/make-from-template" component={MakeFlyerFromTemplate} />
                 <Route exact path="/view-flyer" component={ViewFlyer} />
                 <Route exact path="/manage" component={Manage} />
                 <Route exact path="/edit-flyer" component={EditFlyer} />

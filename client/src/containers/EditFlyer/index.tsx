@@ -47,6 +47,7 @@ const EditFlyer:React.SFC<EditFlyerProps> = ({
     // phone
     const [phone, setPhone] = useState(((flyer.selectedFlyer||{}).contact||{}).phone? flyer.selectedFlyer.contact.phone:"");
     const [phoneSelected, setPhoneSelected] = useState(((flyer.selectedFlyer||{}).contact||{}).phone? "phone":"");
+    const [template, setTemplate] = useState((flyer.selectedFlyer||{}).template === "template"? "template":"")
     // errors
     const [errors, setErrors] = useState({
         heading: "",
@@ -185,7 +186,8 @@ const EditFlyer:React.SFC<EditFlyerProps> = ({
             heading: heading,
             description: description,
             phone: phoneSelected? phone:"",
-            email: selectedEmail? email: ""
+            email: selectedEmail? email: "",
+            template: template
         }
 
         // async action to make API call to make-flyer
@@ -225,6 +227,7 @@ const EditFlyer:React.SFC<EditFlyerProps> = ({
         <EditFlyerStyle>
             <h2>Edit Your Flyer</h2>
             <h5>{(reduxLocation.selectedPlace||{}).name}</h5>
+            <hr />
             <FormWrapper>
                 {renderErrors()}
                 <form onSubmit={handleSubmit}>
@@ -293,7 +296,8 @@ const EditFlyer:React.SFC<EditFlyerProps> = ({
                     {isUserLoggedIn()? (
                         <React.Fragment>
                             <InputGroup>
-                                <Label for="img">Ways to Contact You</Label>
+                                <Label for="img">Contact Information</Label>
+                                <small>Deselect "Email" to use registered email</small>
                                     <CheckBoxContainer>
                                         <div className="CheckBoxItem">
                                             <Input 
@@ -301,7 +305,7 @@ const EditFlyer:React.SFC<EditFlyerProps> = ({
                                                 value="email" 
                                                 checked={selectedEmail? true:false}
                                                 onChange={(e)=>setSelectedEmail(selectedEmail==""?e.target.value:"")}
-                                            />{" "}Email {"|"}
+                                            />{" "}Email 
                                         </div>
                                         <div className="CheckBoxItem">
                                             <Input 
@@ -345,6 +349,21 @@ const EditFlyer:React.SFC<EditFlyerProps> = ({
                         <cite className="text-muted d-block">*Anonymous users must put their contact info in the body.</cite>
                         <cite className="text-muted d-block">SignIn/Register to have more options for your flyers.</cite>
                     </React.Fragment>
+                    }
+                    {isUserLoggedIn() &&
+                        <InputGroup>
+                            <Label>
+                                <Input 
+                                    type="checkbox"
+                                    name="template"
+                                    value="template"
+                                    checked={template? true:false}
+                                    onChange={(e)=>setTemplate(template==""?e.target.value:"")}
+                                />
+                                {" "}
+                                Want to make this flyer a template for future use?
+                            </Label>
+                        </InputGroup>                    
                     }
                     <Button 
                         type="submit"

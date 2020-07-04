@@ -65,7 +65,8 @@ module.exports = {
                 contact: {
                     email: args.flyerInput.contact.email? args.flyerInput.contact.email: (jwtObj.email?jwtObj.email:""),
                     phone: args.flyerInput.contact.phone? args.flyerInput.contact.phone: ""
-                }
+                },
+                template: args.flyerInput.template
             });
             let flyer = await newFlyer.save();
             await Flyer.populate(flyer, "user" ,(err, popFlyer) => {
@@ -138,6 +139,7 @@ module.exports = {
                     email: args.editFlyerInput.contact.email? args.editFlyerInput.contact.email: (jwtObj.email?jwtObj.email:""),
                     phone: args.editFlyerInput.contact.phone? args.editFlyerInput.contact.phone: ""
                 };
+            flyerResponse.template = args.editFlyerInput.template;
             const updatedFlyer = await flyerResponse.save();
             
             return updatedFlyer;

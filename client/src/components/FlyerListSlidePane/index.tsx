@@ -10,7 +10,8 @@ import {
     setSelectedPlace,
     setFlyersInit,
     setOpenFlyerPane,
-    setWishToDeleteFlyer
+    setWishToDeleteFlyer,
+    setUsingTemplate
 } from '../../redux/actions';
 import {getWindowWidth} from '../../utils/functions';
 
@@ -23,6 +24,7 @@ export interface FlyerListSlidepaneProps {
     setFlyersInit: any,
     setWishToDeleteFlyer: any,
     setOpenFlyerPane: any,
+    setUsingTemplate: any,
     children: any,
     manageMode?: boolean
 }
@@ -33,6 +35,7 @@ const FlyerListSlidepane: React.SFC<FlyerListSlidepaneProps> = ({
     setFlyersInit,
     setOpenFlyerPane,
     setWishToDeleteFlyer,
+    setUsingTemplate,
     flyer,
     reduxLocation,
     manageMode
@@ -52,6 +55,7 @@ const FlyerListSlidepane: React.SFC<FlyerListSlidepaneProps> = ({
                     }
                     setOpenFlyerPane(false);
                     setSelectedPlace(null);
+                    setUsingTemplate(false);
                 }}
             >
                 {children}
@@ -69,5 +73,6 @@ export default connect(mapStateToProps, {
     setSelectedPlace,
     setFlyersInit,
     setOpenFlyerPane,
-    setWishToDeleteFlyer
+    setWishToDeleteFlyer,
+    setUsingTemplate
 })(FlyerListSlidepane);

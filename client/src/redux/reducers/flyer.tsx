@@ -12,6 +12,7 @@ export interface IFlyer {
     wishToDeleteFlyer: boolean,
     deletingFlyer: boolean,
     deletedFlyer: any,
+    usingTemplate: boolean,
     errors: any
 }
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
     wishToDeleteFlyer: false,
     deletingFlyer: false,
     deletedFlyer: {},
+    usingTemplate: false,
     errors: null
 }
 
@@ -64,6 +66,7 @@ export default (state:IFlyer=initialState, action:Action) => {
             makingFlyer: false,
             flyerMade: true,
             selectedFlyer: action.payload,
+            usingTemplate: false,
             errors: null
         }
     case constants.FLYER.SET_MAKING_FLYER_FAIL:
@@ -125,6 +128,12 @@ export default (state:IFlyer=initialState, action:Action) => {
             deletingFlyer: false,
             errors: action.payload            
         }
+    case constants.FLYER.SET_USING_TEMPLATE:
+        return {
+            ...state,
+            usingTemplate: action.payload            
+        }
+    
     default: 
       return state;
   }
